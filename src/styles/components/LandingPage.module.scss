@@ -1,0 +1,363 @@
+@import "@src/styles/variables.scss";
+
+
+.mainSection1 {
+  @apply bg-gradient-to-br from-primary to-accent/50;
+
+  .content1 {
+    @apply flex items-center justify-between px-0 pt-16 pb-8 mx-auto;
+    max-width: 1200px;
+    
+    @media (max-width: 768px) {
+      @apply flex-col text-center;
+    }
+
+    .content {
+      @apply flex-1;
+  
+      .title {
+        @apply text-5xl font-bold text-primary-foreground leading-tight;
+      }
+  
+      .subtitle {
+        @apply mt-6 text-xl text-muted;
+      }
+  
+      .button {
+        @apply mt-8 px-6 py-3 bg-accent text-accent-foreground rounded-md;
+        &:hover {
+          @apply bg-accent/80;
+        }
+      }
+    }
+
+    .image {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      img {
+        max-width: 260px;
+      }
+    }
+  }
+
+  .statCardsWrap {
+    @apply grid grid-cols-2 px-0 md:grid-cols-4 gap-6 mx-auto;
+    max-width: 1200px;
+    padding-bottom: 2rem;
+
+    @media (max-width: 768px) {
+      @apply px-4;
+    }
+
+    .iconSize {
+      @apply h-10 w-10;
+    }
+  }
+
+
+}
+
+.mainSection2 {
+  @apply bg-secondary px-8 py-16 text-center;
+
+  .container {
+    @apply max-w-2xl mx-auto;
+    
+    .image {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      img {
+        border-radius: 2rem;
+        max-width: 260px;
+      }
+    }
+
+    .question {
+      @apply text-2xl font-semibold text-text mb-4;
+    }
+    .lineWrap {
+      @apply mt-8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .line {
+        @apply w-px h-16 bg-secondary-foreground;
+        width: 2px; /* 라인의 두께 */
+        height: 8rem; /* 라인의 높이 */
+        justify-content: center; /* 중앙 정렬 */
+        align-items: center; /* 수직 중앙 정렬 */
+      }
+    }
+
+    .answer {
+      @apply mt-8 text-3xl font-bold text-secondary-foreground;
+    }
+
+    .description {
+      @apply mt-6 text-lg text-secondary-foreground;
+    }
+  }
+}
+
+.mainSection3 {
+  @apply flex flex-col items-center py-16 text-center bg-primary;
+
+  .title {
+    @apply text-4xl font-bold text-accent;
+    line-height: 3.5rem;
+  }
+
+  .intro {
+    @apply mt-4 text-lg text-text-light;
+  }
+
+  .list {
+    @apply mt-8 text-left max-w-2xl mx-auto list-disc list-inside;
+
+    li {
+      @apply mb-3 text-lg text-text;
+    }
+  }
+}
+
+.mainSection4 {
+  @apply bg-secondary px-8 py-16 text-center;
+
+  .quote {
+    @apply text-3xl font-semibold text-secondary-foreground mb-8;
+  }
+
+  .content {
+    @apply max-w-2xl mx-auto text-lg text-secondary-foreground space-y-4;
+
+    p {
+      line-height: 1.6;
+    }
+  }
+}
+
+.mainSection5 {
+  @apply px-8 py-16 bg-primary text-center;
+
+  .title {
+    @apply text-3xl font-bold text-primary-foreground mb-8;
+  }
+
+  .recommendationTable {
+    @apply border-separate border-spacing-3 max-w-2xl mx-auto text-left list-disc list-inside space-y-4 text-lg text-primary-foreground;
+
+    td {
+      @apply rounded-xl p-3 px-5 border-2 border-muted/50 bg-secondary;
+
+      &.checkBox {
+        @apply px-6 max-h-5;
+      }
+    }
+  }
+}
+
+.mainSection6 {
+  @apply bg-secondary px-8 py-16 text-center;
+
+  .title {
+    @apply text-3xl font-bold text-secondary-foreground mb-8;
+  }
+
+  .videoContainer {
+    @apply max-w-4xl mx-auto;
+
+    iframe {
+      @apply rounded-xl w-full h-64 md:h-96;
+
+      @media (max-width: 768px) {
+        @apply h-64;
+      }
+    }
+  }
+}
+
+.mainSection7 {
+  @apply px-8 py-16 bg-primary text-center;
+
+  .content{
+    @apply mx-auto;
+    max-width: 1200px;
+  }
+
+  .title {
+    @apply text-3xl font-bold text-primary-foreground mb-8;
+  }
+
+  .programs {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-8;
+
+    .program {
+      @apply border p-6 rounded-lg text-left;
+
+      h3 {
+        @apply text-xl font-semibold mb-4;
+      }
+
+      ul {
+        @apply list-disc list-inside text-primary-foreground space-y-2;
+
+        li {
+          line-height: 1.6;
+        }
+      }
+    }
+  }
+}
+
+.mainSection8 {
+  @apply px-8 py-16 bg-secondary text-center;
+
+  .title {
+    @apply text-3xl font-bold text-secondary-foreground mb-4;
+  }
+
+  .button {
+    @apply px-6 py-3 bg-accent text-accent-foreground rounded-md;
+    &:hover {
+      @apply bg-accent/80;
+    }
+  }
+
+  .subtitle {
+    @apply text-xl text-secondary-foreground mb-6;
+
+    br {
+      @apply hidden md:block;
+    }
+  }
+
+  .description {
+    @apply text-lg text-secondary-foreground;
+
+    /* 커리큘럼 예시 내용 추가 스타일링 */
+  }
+}
+
+.mainSection9 {
+  @apply px-8 py-16 bg-primary text-center;
+  .profitImage{
+    @apply mx-auto mb-10;
+  }
+
+  .title {
+    @apply text-2xl font-bold text-primary-foreground mb-8;
+  }
+
+  .activities {
+    @apply max-w-2xl mx-auto text-left list-disc list-inside text-primary-foreground space-y-3;
+
+    li {
+      line-height: 1.6;
+    }
+  }
+}
+
+.mainSection10 {
+  @apply px-8 py-16 bg-secondary text-center;
+
+  .content{
+    @apply mx-auto;
+    max-width: 1200px;
+  }
+
+  .title {
+    @apply text-3xl font-bold text-secondary-foreground mb-8;
+  }
+
+}
+
+.mainSection11 {
+  @apply px-8 py-16 bg-primary text-center;
+
+  .title {
+    @apply text-3xl font-bold text-primary-foreground mb-4;
+  }
+
+  .description {
+    @apply text-lg text-primary-foreground mb-6;
+  }
+
+  .button {
+    @apply px-6 py-3 bg-accent text-accent-foreground rounded-md;
+    &:hover {
+      @apply bg-accent/80;
+    }
+  }
+}
+
+.mainSection12 {
+  @apply px-8 py-16 bg-secondary;
+
+  .content{
+    @apply flex text-center justify-between mx-auto;
+    max-width: 1200px;
+    
+    @media (max-width: 768px) {
+      @apply flex-col text-center;
+    }
+  }
+
+  .title {
+    @apply text-3xl font-bold text-secondary-foreground mb-8;
+  }
+
+  .faq {
+    @apply max-w-2xl text-left;
+
+    details {
+      @apply mb-4;
+
+      summary {
+        @apply cursor-pointer text-lg font-semibold text-secondary-foreground;
+
+        &:hover {
+          @apply text-secondary-foreground/80;
+        }
+      }
+
+      p {
+        @apply mt-2 text-secondary-foreground;
+      }
+    }
+  }
+
+  .contactCard {
+    @apply mt-8 bg-gradient-to-tl from-accent/60 via-accent/30 to-accent/60 p-6 rounded-lg shadow-md text-center;
+
+    p {
+      @apply text-lg text-primary-foreground;
+
+      &.tel {
+        @apply mt-2 text-xl font-bold text-secondary-foreground;
+      }
+    }
+  }
+}
+
+.mainSection13 {
+  @apply px-8 py-16 bg-primary text-center;
+
+  .title {
+    @apply text-3xl font-bold text-primary-foreground mb-8;
+  }
+
+  .contacts {
+    @apply flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8;
+
+    .contactItem {
+      @apply px-4 py-2 bg-accent text-accent-foreground rounded-md;
+      &:hover {
+        @apply bg-accent/80;
+      }
+    }
+  }
+}

@@ -1,0 +1,665 @@
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[9].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[9].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[14].oneOf[9].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[14].oneOf[9].use[5]!./src/styles/components/LandingPage.module.scss ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+@charset "UTF-8";
+/* Define Sass variables */
+/* 색상 변수 가이드 */
+/*
+  background: 사이트의 배경색
+  foreground: 사이트의 전경색
+
+  card: 사이트의 카드 색상
+  card-foreground: 사이트의 카드 전경색
+  popover: 사이트의 팝오버 색상
+  popover-foreground: 사이트의 팝오버 전경색
+
+  primary: 사이트에서 가장 큰 비중을 차지하는 색상
+  primary-foreground: 사이트의 주요 텍스트 색상
+  secondary: 사이트에서 두번째로 큰 비중을 차지하는 색상
+  secondary-foreground: 사이트의 보조 텍스트 색상
+
+  accent: 사이트의 포인트 컬러(대개는 브랜드 색상)
+  accent-foreground: 사이트의 포인트 컬러 텍스트 색상
+
+  muted: 사이트 내에서 덜 중요하거나 비활성화된 색상
+  muted-foreground: 사이트 내에서 덜 중요하거나 비활성화된 텍스트 색상
+
+  destructive: 경고를 위한 색상
+  destructive-foreground: 사이트의 경고 텍스트 색상
+
+  border: 사이트의 테두리 색상
+  input: 사이트의 입력 색상
+  ring: 사용자가 포커싱 한 요소의 테두리 색상
+  radius: 사이트의 모서리 반경
+
+  chart-1: 사이트의 차트 색상 1
+  chart-2: 사이트의 차트 색상 2
+  chart-3: 사이트의 차트 색상 3
+  chart-4: 사이트의 차트 색상 4
+  chart-5: 사이트의 차트 색상 5
+*/
+.LandingPage_mainSection1___fzei{
+  background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+  --tw-gradient-from: hsl(var(--primary)) var(--tw-gradient-from-position);
+  --tw-gradient-to: hsl(var(--primary) / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  --tw-gradient-to: hsl(var(--accent) / 0.5) var(--tw-gradient-to-position);
+}
+.LandingPage_mainSection1___fzei .LandingPage_content1__4ittB{
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 4rem;
+  padding-bottom: 2rem;
+  max-width: 1200px;
+}
+@media (max-width: 768px) {
+  .LandingPage_mainSection1___fzei .LandingPage_content1__4ittB{
+    flex-direction: column;
+    text-align: center;
+  }
+}
+.LandingPage_mainSection1___fzei .LandingPage_content1__4ittB .LandingPage_content__Nl650{
+  flex: 1 1 0%;
+}
+.LandingPage_mainSection1___fzei .LandingPage_content1__4ittB .LandingPage_content__Nl650 .LandingPage_title__1IPrG{
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: hsl(var(--primary-foreground));
+}
+.LandingPage_mainSection1___fzei .LandingPage_content1__4ittB .LandingPage_content__Nl650 .LandingPage_subtitle__i9wnK{
+  margin-top: 1.5rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  color: hsl(var(--muted));
+}
+.LandingPage_mainSection1___fzei .LandingPage_content1__4ittB .LandingPage_content__Nl650 .LandingPage_button__1R4CA{
+  margin-top: 2rem;
+  border-radius: calc(var(--radius) - 2px);
+  background-color: hsl(var(--accent));
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  color: hsl(var(--accent-foreground));
+}
+.LandingPage_mainSection1___fzei .LandingPage_content1__4ittB .LandingPage_content__Nl650 .LandingPage_button__1R4CA:hover{
+  background-color: hsl(var(--accent) / 0.8);
+}
+.LandingPage_mainSection1___fzei .LandingPage_content1__4ittB .LandingPage_image__mk_TJ {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.LandingPage_mainSection1___fzei .LandingPage_content1__4ittB .LandingPage_image__mk_TJ img {
+  max-width: 260px;
+}
+.LandingPage_mainSection1___fzei .LandingPage_statCardsWrap__eJmDL{
+  margin-left: auto;
+  margin-right: auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+@media (min-width: 768px){
+  .LandingPage_mainSection1___fzei .LandingPage_statCardsWrap__eJmDL{
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.LandingPage_mainSection1___fzei .LandingPage_statCardsWrap__eJmDL {
+  max-width: 1200px;
+  padding-bottom: 2rem;
+}
+@media (max-width: 768px) {
+  .LandingPage_mainSection1___fzei .LandingPage_statCardsWrap__eJmDL{
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+.LandingPage_mainSection1___fzei .LandingPage_statCardsWrap__eJmDL .LandingPage_iconSize__htvTA{
+  height: 2.5rem;
+  width: 2.5rem;
+}
+.LandingPage_mainSection2__wADDC{
+  background-color: hsl(var(--secondary));
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  text-align: center;
+}
+.LandingPage_mainSection2__wADDC .LandingPage_container__trKSE{
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 42rem;
+}
+.LandingPage_mainSection2__wADDC .LandingPage_container__trKSE .LandingPage_image__mk_TJ {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.LandingPage_mainSection2__wADDC .LandingPage_container__trKSE .LandingPage_image__mk_TJ img {
+  border-radius: 2rem;
+  max-width: 260px;
+}
+.LandingPage_mainSection2__wADDC .LandingPage_container__trKSE .LandingPage_question__mvaS1{
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+.LandingPage_mainSection2__wADDC .LandingPage_container__trKSE .LandingPage_lineWrap__oeMuY{
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.LandingPage_mainSection2__wADDC .LandingPage_container__trKSE .LandingPage_lineWrap__oeMuY .LandingPage_line__J1baR{
+  background-color: hsl(var(--secondary-foreground));
+  width: 2px; /* 라인의 두께 */
+  height: 8rem; /* 라인의 높이 */
+  justify-content: center; /* 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+}
+.LandingPage_mainSection2__wADDC .LandingPage_container__trKSE .LandingPage_answer__GHHjd{
+  margin-top: 2rem;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  color: hsl(var(--secondary-foreground));
+}
+.LandingPage_mainSection2__wADDC .LandingPage_container__trKSE .LandingPage_description__iDu1d{
+  margin-top: 1.5rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  color: hsl(var(--secondary-foreground));
+}
+.LandingPage_mainSection3___odTe{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: hsl(var(--primary));
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  text-align: center;
+}
+.LandingPage_mainSection3___odTe .LandingPage_title__1IPrG{
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: hsl(var(--accent));
+  line-height: 3.5rem;
+}
+.LandingPage_mainSection3___odTe .LandingPage_intro__teLLv{
+  margin-top: 1rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  color: var(--text-light-color);
+}
+.LandingPage_mainSection3___odTe .LandingPage_list__q9eql{
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2rem;
+  max-width: 42rem;
+  list-style-position: inside;
+  list-style-type: disc;
+  text-align: left;
+}
+.LandingPage_mainSection3___odTe .LandingPage_list__q9eql li{
+  margin-bottom: 0.75rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  color: var(--text-color);
+}
+.LandingPage_mainSection4__aW_EL{
+  background-color: hsl(var(--secondary));
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  text-align: center;
+}
+.LandingPage_mainSection4__aW_EL .LandingPage_quote__cbK7h{
+  margin-bottom: 2rem;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 600;
+  color: hsl(var(--secondary-foreground));
+}
+.LandingPage_mainSection4__aW_EL .LandingPage_content__Nl650{
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 42rem;
+}
+.LandingPage_mainSection4__aW_EL .LandingPage_content__Nl650 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+.LandingPage_mainSection4__aW_EL .LandingPage_content__Nl650{
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  color: hsl(var(--secondary-foreground));
+}
+.LandingPage_mainSection4__aW_EL .LandingPage_content__Nl650 p {
+  line-height: 1.6;
+}
+.LandingPage_mainSection5__ispk5{
+  background-color: hsl(var(--primary));
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  text-align: center;
+}
+.LandingPage_mainSection5__ispk5 .LandingPage_title__1IPrG{
+  margin-bottom: 2rem;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  color: hsl(var(--primary-foreground));
+}
+.LandingPage_mainSection5__ispk5 .LandingPage_recommendationTable__DzyI2{
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 42rem;
+  border-collapse: separate;
+  --tw-border-spacing-x: 0.75rem;
+  --tw-border-spacing-y: 0.75rem;
+  border-spacing: var(--tw-border-spacing-x) var(--tw-border-spacing-y);
+  list-style-position: inside;
+  list-style-type: disc;
+}
+.LandingPage_mainSection5__ispk5 .LandingPage_recommendationTable__DzyI2 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+.LandingPage_mainSection5__ispk5 .LandingPage_recommendationTable__DzyI2{
+  text-align: left;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  color: hsl(var(--primary-foreground));
+}
+.LandingPage_mainSection5__ispk5 .LandingPage_recommendationTable__DzyI2 td{
+  border-radius: 0.75rem;
+  border-width: 2px;
+  border-color: hsl(var(--muted) / 0.5);
+  background-color: hsl(var(--secondary));
+  padding: 0.75rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+.LandingPage_mainSection5__ispk5 .LandingPage_recommendationTable__DzyI2 td.LandingPage_checkBox__y5f0F{
+  max-height: 1.25rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+.LandingPage_mainSection6__e4Nqz{
+  background-color: hsl(var(--secondary));
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  text-align: center;
+}
+.LandingPage_mainSection6__e4Nqz .LandingPage_title__1IPrG{
+  margin-bottom: 2rem;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  color: hsl(var(--secondary-foreground));
+}
+.LandingPage_mainSection6__e4Nqz .LandingPage_videoContainer__e_fPL{
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 56rem;
+}
+.LandingPage_mainSection6__e4Nqz .LandingPage_videoContainer__e_fPL iframe{
+  height: 16rem;
+  width: 100%;
+  border-radius: 0.75rem;
+}
+@media (min-width: 768px){
+  .LandingPage_mainSection6__e4Nqz .LandingPage_videoContainer__e_fPL iframe{
+    height: 24rem;
+  }
+}
+@media (max-width: 768px) {
+  .LandingPage_mainSection6__e4Nqz .LandingPage_videoContainer__e_fPL iframe{
+    height: 16rem;
+  }
+}
+.LandingPage_mainSection7__pKNMP{
+  background-color: hsl(var(--primary));
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  text-align: center;
+}
+.LandingPage_mainSection7__pKNMP .LandingPage_content__Nl650{
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1200px;
+}
+.LandingPage_mainSection7__pKNMP .LandingPage_title__1IPrG{
+  margin-bottom: 2rem;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  color: hsl(var(--primary-foreground));
+}
+.LandingPage_mainSection7__pKNMP .LandingPage_programs__j8Iz5{
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 2rem;
+}
+@media (min-width: 768px){
+  .LandingPage_mainSection7__pKNMP .LandingPage_programs__j8Iz5{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.LandingPage_mainSection7__pKNMP .LandingPage_programs__j8Iz5 .LandingPage_program__M7alP{
+  border-radius: var(--radius);
+  border-width: 1px;
+  padding: 1.5rem;
+  text-align: left;
+}
+.LandingPage_mainSection7__pKNMP .LandingPage_programs__j8Iz5 .LandingPage_program__M7alP h3{
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+}
+.LandingPage_mainSection7__pKNMP .LandingPage_programs__j8Iz5 .LandingPage_program__M7alP ul{
+  list-style-position: inside;
+  list-style-type: disc;
+}
+.LandingPage_mainSection7__pKNMP .LandingPage_programs__j8Iz5 .LandingPage_program__M7alP ul > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+.LandingPage_mainSection7__pKNMP .LandingPage_programs__j8Iz5 .LandingPage_program__M7alP ul{
+  color: hsl(var(--primary-foreground));
+}
+.LandingPage_mainSection7__pKNMP .LandingPage_programs__j8Iz5 .LandingPage_program__M7alP ul li {
+  line-height: 1.6;
+}
+.LandingPage_mainSection8__fDxoQ{
+  background-color: hsl(var(--secondary));
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  text-align: center;
+}
+.LandingPage_mainSection8__fDxoQ .LandingPage_title__1IPrG{
+  margin-bottom: 1rem;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  color: hsl(var(--secondary-foreground));
+}
+.LandingPage_mainSection8__fDxoQ .LandingPage_button__1R4CA{
+  border-radius: calc(var(--radius) - 2px);
+  background-color: hsl(var(--accent));
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  color: hsl(var(--accent-foreground));
+}
+.LandingPage_mainSection8__fDxoQ .LandingPage_button__1R4CA:hover{
+  background-color: hsl(var(--accent) / 0.8);
+}
+.LandingPage_mainSection8__fDxoQ .LandingPage_subtitle__i9wnK{
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  color: hsl(var(--secondary-foreground));
+}
+.LandingPage_mainSection8__fDxoQ .LandingPage_subtitle__i9wnK br{
+  display: none;
+}
+@media (min-width: 768px){
+  .LandingPage_mainSection8__fDxoQ .LandingPage_subtitle__i9wnK br{
+    display: block;
+  }
+}
+.LandingPage_mainSection8__fDxoQ .LandingPage_description__iDu1d{
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  color: hsl(var(--secondary-foreground));
+  /* 커리큘럼 예시 내용 추가 스타일링 */
+}
+.LandingPage_mainSection9__mNIO1{
+  background-color: hsl(var(--primary));
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  text-align: center;
+}
+.LandingPage_mainSection9__mNIO1 .LandingPage_profitImage__E0skb{
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2.5rem;
+}
+.LandingPage_mainSection9__mNIO1 .LandingPage_title__1IPrG{
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+  color: hsl(var(--primary-foreground));
+}
+.LandingPage_mainSection9__mNIO1 .LandingPage_activities__cncES{
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 42rem;
+  list-style-position: inside;
+  list-style-type: disc;
+}
+.LandingPage_mainSection9__mNIO1 .LandingPage_activities__cncES > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
+}
+.LandingPage_mainSection9__mNIO1 .LandingPage_activities__cncES{
+  text-align: left;
+  color: hsl(var(--primary-foreground));
+}
+.LandingPage_mainSection9__mNIO1 .LandingPage_activities__cncES li {
+  line-height: 1.6;
+}
+.LandingPage_mainSection10__DvycC{
+  background-color: hsl(var(--secondary));
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  text-align: center;
+}
+.LandingPage_mainSection10__DvycC .LandingPage_content__Nl650{
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1200px;
+}
+.LandingPage_mainSection10__DvycC .LandingPage_title__1IPrG{
+  margin-bottom: 2rem;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  color: hsl(var(--secondary-foreground));
+}
+.LandingPage_mainSection11__8T1KS{
+  background-color: hsl(var(--primary));
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  text-align: center;
+}
+.LandingPage_mainSection11__8T1KS .LandingPage_title__1IPrG{
+  margin-bottom: 1rem;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  color: hsl(var(--primary-foreground));
+}
+.LandingPage_mainSection11__8T1KS .LandingPage_description__iDu1d{
+  margin-bottom: 1.5rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  color: hsl(var(--primary-foreground));
+}
+.LandingPage_mainSection11__8T1KS .LandingPage_button__1R4CA{
+  border-radius: calc(var(--radius) - 2px);
+  background-color: hsl(var(--accent));
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  color: hsl(var(--accent-foreground));
+}
+.LandingPage_mainSection11__8T1KS .LandingPage_button__1R4CA:hover{
+  background-color: hsl(var(--accent) / 0.8);
+}
+.LandingPage_mainSection12__oOvJs{
+  background-color: hsl(var(--secondary));
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+.LandingPage_mainSection12__oOvJs .LandingPage_content__Nl650{
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  max-width: 1200px;
+}
+@media (max-width: 768px) {
+  .LandingPage_mainSection12__oOvJs .LandingPage_content__Nl650{
+    flex-direction: column;
+    text-align: center;
+  }
+}
+.LandingPage_mainSection12__oOvJs .LandingPage_title__1IPrG{
+  margin-bottom: 2rem;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  color: hsl(var(--secondary-foreground));
+}
+.LandingPage_mainSection12__oOvJs .LandingPage_faq__1M_B5{
+  max-width: 42rem;
+  text-align: left;
+}
+.LandingPage_mainSection12__oOvJs .LandingPage_faq__1M_B5 details{
+  margin-bottom: 1rem;
+}
+.LandingPage_mainSection12__oOvJs .LandingPage_faq__1M_B5 details summary{
+  cursor: pointer;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  color: hsl(var(--secondary-foreground));
+}
+.LandingPage_mainSection12__oOvJs .LandingPage_faq__1M_B5 details summary:hover{
+  color: hsl(var(--secondary-foreground) / 0.8);
+}
+.LandingPage_mainSection12__oOvJs .LandingPage_faq__1M_B5 details p{
+  margin-top: 0.5rem;
+  color: hsl(var(--secondary-foreground));
+}
+.LandingPage_mainSection12__oOvJs .LandingPage_contactCard__zZlAK{
+  margin-top: 2rem;
+  border-radius: var(--radius);
+  background-image: linear-gradient(to top left, var(--tw-gradient-stops));
+  --tw-gradient-from: hsl(var(--accent) / 0.6) var(--tw-gradient-from-position);
+  --tw-gradient-to: hsl(var(--accent) / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  --tw-gradient-to: hsl(var(--accent) / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--accent) / 0.3) var(--tw-gradient-via-position), var(--tw-gradient-to);
+  --tw-gradient-to: hsl(var(--accent) / 0.6) var(--tw-gradient-to-position);
+  padding: 1.5rem;
+  text-align: center;
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.LandingPage_mainSection12__oOvJs .LandingPage_contactCard__zZlAK p{
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  color: hsl(var(--primary-foreground));
+}
+.LandingPage_mainSection12__oOvJs .LandingPage_contactCard__zZlAK p.LandingPage_tel__ubeTc{
+  margin-top: 0.5rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 700;
+  color: hsl(var(--secondary-foreground));
+}
+.LandingPage_mainSection13__w4vrB{
+  background-color: hsl(var(--primary));
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  text-align: center;
+}
+.LandingPage_mainSection13__w4vrB .LandingPage_title__1IPrG{
+  margin-bottom: 2rem;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  color: hsl(var(--primary-foreground));
+}
+.LandingPage_mainSection13__w4vrB .LandingPage_contacts__5ZqT4{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.LandingPage_mainSection13__w4vrB .LandingPage_contacts__5ZqT4 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+@media (min-width: 768px){
+  .LandingPage_mainSection13__w4vrB .LandingPage_contacts__5ZqT4{
+    flex-direction: row;
+  }
+  .LandingPage_mainSection13__w4vrB .LandingPage_contacts__5ZqT4 > :not([hidden]) ~ :not([hidden]){
+    --tw-space-y-reverse: 0;
+    margin-top: calc(0px * calc(1 - var(--tw-space-y-reverse)));
+    margin-bottom: calc(0px * var(--tw-space-y-reverse));
+    --tw-space-x-reverse: 0;
+    margin-right: calc(2rem * var(--tw-space-x-reverse));
+    margin-left: calc(2rem * calc(1 - var(--tw-space-x-reverse)));
+  }
+}
+.LandingPage_mainSection13__w4vrB .LandingPage_contacts__5ZqT4 .LandingPage_contactItem__icIP1{
+  border-radius: calc(var(--radius) - 2px);
+  background-color: hsl(var(--accent));
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  color: hsl(var(--accent-foreground));
+}
+.LandingPage_mainSection13__w4vrB .LandingPage_contacts__5ZqT4 .LandingPage_contactItem__icIP1:hover{
+  background-color: hsl(var(--accent) / 0.8);
+}

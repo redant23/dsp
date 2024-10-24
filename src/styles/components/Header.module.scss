@@ -1,0 +1,95 @@
+// @import "@src/styles/variables.scss";
+
+
+.headerWrap {
+  @apply fixed top-0 left-0 p-4 right-0 z-50 bg-secondary shadow-md;
+  margin: 0 auto;
+  z-index: 100;
+  height: 5rem;
+  box-sizing: border-box;
+  
+  @media (max-width: 768px) {
+    @apply p-2;
+    height: 4rem;
+  }
+  
+  .active {
+    a {
+      @apply text-accent;
+    }
+  }
+  
+  .header {
+    @apply relative flex items-center justify-between mx-auto;
+    max-width: 1200px;
+    height: 3rem;
+
+    img {
+      @apply w-auto h-auto min-w-36;
+    }
+
+    @media (max-width: 768px) {
+      @apply flex justify-between items-center;
+      img {
+        @apply min-w-28;
+      }
+    }
+  }
+}
+
+.headerTitleLink {
+  text-decoration: none;
+
+  @media (max-width: 768px) { /* 모바일 화면 크기 */
+    height: 3rem;
+    img { 
+      width: 110px; /* 모바일 width */
+    }
+  }
+}
+
+.nav {
+  @apply flex items-center space-x-6;
+  max-width: 1200px;
+
+  @media (max-width: 768px) {
+    @apply w-full;
+    height: 3rem;
+    padding: 0 2rem;
+    display: none;
+
+    &.navOpen {
+      @apply absolute top-12 block;
+      width: calc(100% + 48px);
+      right: -24px;
+    }
+  }
+}
+
+.nav ul {
+  @apply flex items-center space-x-6;
+
+  @media (max-width: 768px) {
+    @apply absolute top-0 right-0 flex-col bg-secondary/90 backdrop-blur-md items-end space-x-0 space-y-4;
+    width: 100%;
+    padding: 26px;
+  }
+}
+
+.nav a {
+  @apply text-base text-foreground hover:text-foreground/80;
+}
+
+.applyButton {
+  @apply px-4 py-2 bg-accent hover:bg-accent/90 text-accent-foreground rounded-md;
+
+  
+}
+
+.menuIcon {
+  @apply hidden text-3xl text-foreground cursor-pointer;
+
+  @media (max-width: 768px) {
+    @apply block;
+  }
+}

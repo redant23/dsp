@@ -1,0 +1,143 @@
+/* Define Sass variables */
+// 색상 hsl값 (hue, saturation, lightness)
+
+$dsp-black: 0 0% 13%;
+$dsp-yellow: 42 92% 47%;
+$dsp-blue: 210 75% 40%;
+$dsp-light-blue: 207 62% 64%;
+$dsp-dark-blue: 210 75% 30%;
+$dsp-white: 0 3% 98%;
+$dsp-white-pure: 0 0% 100%;
+$dsp-light-gray: 0 0% 91%;
+$dsp-medium-gray: 0 0% 80%;
+$dsp-gray: 0 0% 60%;
+$dsp-dark-gray: 0 0% 15%;
+$dsp-extra-light-gray: 0 0% 96%;
+$dsp-extra-dark-gray: 0 0% 18%;
+
+// 기능적 색상
+$dsp-red: 356 61% 42%;
+$dsp-green: 120 95% 41%;
+
+/* 색상 변수 가이드 */
+/*
+  background: 사이트의 배경색
+  foreground: 사이트의 전경색
+  
+  card: 사이트의 카드 색상
+  card-foreground: 사이트의 카드 전경색
+  popover: 사이트의 팝오버 색상
+  popover-foreground: 사이트의 팝오버 전경색
+
+  primary: 사이트에서 가장 큰 비중을 차지하는 색상
+  primary-foreground: 사이트의 주요 텍스트 색상
+  secondary: 사이트에서 두번째로 큰 비중을 차지하는 색상
+  secondary-foreground: 사이트의 보조 텍스트 색상
+
+  accent: 사이트의 포인트 컬러(대개는 브랜드 색상)
+  accent-foreground: 사이트의 포인트 컬러 텍스트 색상
+
+  muted: 사이트 내에서 덜 중요하거나 비활성화된 색상
+  muted-foreground: 사이트 내에서 덜 중요하거나 비활성화된 텍스트 색상
+  
+  destructive: 경고를 위한 색상
+  destructive-foreground: 사이트의 경고 텍스트 색상
+ 
+  border: 사이트의 테두리 색상
+  input: 사이트의 입력 색상
+  ring: 사용자가 포커싱 한 요소의 테두리 색상
+  radius: 사이트의 모서리 반경
+
+  chart-1: 사이트의 차트 색상 1
+  chart-2: 사이트의 차트 색상 2
+  chart-3: 사이트의 차트 색상 3
+  chart-4: 사이트의 차트 색상 4
+  chart-5: 사이트의 차트 색상 5
+*/
+
+
+// 정의되지 않은 모든 요소들의 기본 색상
+$background: $dsp-white;
+$foreground: $dsp-black;
+$background-dark: $dsp-black;
+$foreground-dark: $dsp-white;
+
+// 카드 및 팝오버 색상
+$card: $dsp-white;
+$card-dark: $dsp-dark-gray;
+$card-foreground: $dsp-black;
+$card-foreground-dark: $dsp-white;
+$popover: $dsp-white;
+$popover-foreground: $dsp-yellow;
+$popover-dark: $dsp-black;
+$popover-foreground-dark: $dsp-yellow;
+
+
+// 주요색과 보조색
+$primary: $dsp-white-pure;
+$primary-foreground: $dsp-black;
+$primary-dark: $dsp-dark-gray;
+$primary-foreground-dark: $dsp-white;
+
+$secondary: $dsp-white;
+$secondary-foreground: $dsp-black;
+$secondary-dark: $dsp-black;
+$secondary-foreground-dark: $dsp-white;
+
+// 포인트 컬러
+$accent: $dsp-yellow;
+$accent-foreground: $dsp-black;
+
+// 덜 강조돼야 하는 요소들의 색상
+$muted: $dsp-gray;
+$muted-foreground: $dsp-dark-gray;
+
+// 경고를 위한 색상
+$destructive: $dsp-red;
+$destructive-foreground: $dsp-white;
+$warning: $dsp-yellow;
+$warning-foreground: $dsp-black;
+
+$border: $dsp-gray;
+$input: $dsp-light-gray;
+$input-dark: $dsp-dark-gray;
+
+// 포커싱 요소의 테두리 색상
+$ring: $dsp-yellow;
+
+$radius: 0.5rem;
+
+$chart-1: $dsp-red;
+$chart-2: $dsp-blue;
+$chart-3: $dsp-green;
+$chart-4: $dsp-light-blue;
+$chart-5: $dsp-yellow;
+
+
+// Typography
+$font-family-base: 'Pretendard', 'Noto Sans KR', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$font-size-base: 16px;
+$font-size-small: 14px;
+$font-size-large: 20px;
+$line-height-base: 1.5;
+$font-weight-normal: 400;
+$font-weight-bold: 700;
+$leading-10: 3.5rem;
+
+// Spacing
+$spacing-unit: 8px;
+$spacing-small: $spacing-unit * 0.5;
+$spacing-medium: $spacing-unit;
+$spacing-large: $spacing-unit * 2;
+$spacing-xlarge: $spacing-unit * 4;
+
+// Breakpoints
+$breakpoint-medium: 768px;
+$breakpoint-xlarge: 1200px;
+
+// Shadows
+$box-shadow-base: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+$box-shadow-medium: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+$box-shadow-large: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+
+
