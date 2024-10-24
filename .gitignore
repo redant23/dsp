@@ -1,1 +1,19 @@
+
+# Node.js
 node_modules
+
+# next
+.next
+
+# Environment variables
+.env
+
+# MacOS
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Ignore shell script used for commits
+commit.sh
