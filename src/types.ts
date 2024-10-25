@@ -8,12 +8,10 @@ export interface User {
 }
 
 export interface ExchangeRate {
-  cur_unit: string;
-  ttb: string;
-  tts: string;
-  deal_bas_r: string;
+  buy: number;
+  sell: number;
 }
 
 export interface StockPortfolioListProps {
-  exchangeRates: ExchangeRate[];
+  exchangeRate: ExchangeRate;
 }

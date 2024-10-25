@@ -5,9 +5,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@src/components/ui/select";
 import { Button } from "@src/components/ui/button";
 import { Input } from "@src/components/ui/input";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@src/components/ui/dialog";
-import { X, Plus, Search } from 'lucide-react';
-import { StockPortfolioListProps } from '@src/types';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@src/components/ui/dialog";
+import { X, Plus } from 'lucide-react';
+import { StockPortfolioListProps, ExchangeRate } from '@src/types';
 
 const formatDate = (date: Date) => {
   return date.toISOString().split('T')[0].replace(/-/g, '.');
@@ -30,7 +30,7 @@ type Stock = {
   paymentMonth: string;
 };
 
-const StockPortfolioList: React.FC<StockPortfolioListProps> = ({ exchangeRates }) => {
+const StockPortfolioList: React.FC<StockPortfolioListProps> = ({ exchangeRate }: { exchangeRate: ExchangeRate }) => {
   const [stocks, setStocks] = useState<Stock[]>([]);
   const [filter, setFilter] = useState<'전체' | '보유예정' | '보유중' | '매도'>('전체');
   const [newTicker, setNewTicker] = useState('');
