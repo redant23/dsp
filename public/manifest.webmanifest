@@ -1,0 +1,11 @@
+{
+  "name": "DSP | Dividend Stocks Portfolio",
+  "short_name": "DSP",
+  "description": "배당주 포트폴리오 관리 서비스",
+  "start_url": "/",
+  "display": "standalone",
+  "icons": [
+    { "src": "/icon-192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "/icon-512.png", "type": "image/png", "sizes": "512x512" }
+  ]
+}

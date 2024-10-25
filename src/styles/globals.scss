@@ -17,11 +17,8 @@
 body {
   @apply font-sans;
   font-family: var(--font-family-base);
-  // background-color: var(--background-color);
-  // color: var(--text-color);
   margin: 0;
-  padding-top: 60px;
-  padding-bottom: 60px;
+  padding: 0;
   word-break: keep-all;
 
   input:-webkit-autofill,
@@ -36,6 +33,9 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+  :root {
+    --radius: 0.5rem;
   }
 }
 
@@ -57,6 +57,10 @@ body {
     --accent-foreground: #{$accent-foreground};
     --destructive: #{$destructive};
     --destructive-foreground: #{$destructive-foreground};
+    --warning: #{$warning};
+    --warning-foreground: #{$warning-foreground};
+    --success: #{$success};
+    --success-foreground: #{$success-foreground};
     --border: #{$border};
     --input: #{$input};
     --ring: #{$ring};

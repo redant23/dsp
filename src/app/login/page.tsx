@@ -6,17 +6,39 @@ import { Button } from "@src/components/ui/button";
 import { Input } from "@src/components/ui/input";
 import { Label } from "@src/components/ui/label";
 import { Loader2 } from "lucide-react";
+import { useRouter } from 'next/navigation';
+import { useToast } from "@src/hooks/use-toast";
 
 export default function LoginPage() {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const router = useRouter();
+  const { toast } = useToast();
 
   async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault()
-    setIsLoading(true)
+    event.preventDefault();
+    setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+      localStorage.setItem('token', data.token);
+      router.push('/');
+
+    } catch (error) {
+      console.error('Error during login:', error);
+      toast({
+        title: "로그인 실패",
+        description: "이메일 또는 비밀번호가 올바르지 않습니다.",
+        duration: 2000,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -33,6 +55,8 @@ export default function LoginPage() {
                 id="email"
                 name="email"
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 autoComplete="email"
                 required
                 className="mt-1 bg-secondary border-border text-foreground"
@@ -44,6 +68,8 @@ export default function LoginPage() {
                 id="password"
                 name="password"
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
                 required
                 className="mt-1 bg-secondary border-border text-foreground"

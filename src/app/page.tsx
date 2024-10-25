@@ -3,19 +3,29 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import LandingPage from "@src/components/LandingPage";
+import { User } from '@src/types';
+
 
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
-    // 여기에 로그인 상태를 확인하는 로직을 추가해야 합니다.
-    // 예를 들어, 세션이나 토큰을 확인하는 등의 작업을 수행합니다.
-    const checkLoginStatus = () => {
-      // 로그인 상태 확인 로직
-      // 임시로 false로 설정했습니다. 실제 로직으로 대체해야 합니다.
-      const loggedIn = false;
+    const checkLoginStatus = async () => {
+      const response = await fetch('/api/auth/status', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+
+      const loggedIn = data.isAuthenticated;
       setIsLoggedIn(loggedIn);
+      setUser(data.user);
 
       if (!loggedIn) {
         router.push('/login'); // 로그인 페이지로 리다이렉트
@@ -30,8 +40,8 @@ export default function Home() {
   }
 
   return (
-    <div>
-      <LandingPage />
+    <div className="bg-primary">
+      <LandingPage user={user} />
     </div>
   );
 }

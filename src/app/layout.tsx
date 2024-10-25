@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import '@src/styles/globals.scss';
 import Header from '@src/components/Header';
+import { Toaster } from '@src/components/ui/toaster';
 
 import { ThemeProvider } from "@src/components/ThemeProvider";
 export const metadata: Metadata = {
-  title: "프랩 | 초중등 과학 탐구 교육 전문 학원",
-  description: `단순히 지식만을 가르치는 기존 학원에서는 변화하는 입시에서 남들과 다른 경쟁력을 만들어낼 수 없습니다. 과학적 사고력, 문제 해결 능력, 정보 탐색 능력, 창의력, 의사소통 능력, 협업 능력 등을 키워줄 수 있는 "탐구 교육"을 하는 plab만 가능합니다.`,
+  title: "DSP | Dividend Stocks Portfolio",
+  description: `월배당 포트폴리오를 관리할 수 있는 웹서비스`,
 };
 
 export default function RootLayout({
@@ -15,10 +16,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/favicon.svg" />
+        <link rel="manifest" href="/manifest.webmanifest" />
+      </head>
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Header />
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
