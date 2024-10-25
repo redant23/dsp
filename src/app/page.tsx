@@ -9,10 +9,15 @@ import { User } from '@src/types';
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const router = useRouter();
-  const token = localStorage.getItem('token');
+  
 
   useEffect(() => {
+    
+    const storedToken = localStorage.getItem('token');
+    setToken(storedToken);
+
     const checkLoginStatus = async () => {
       const response = await fetch('/api/auth/status', {
         method: 'POST',
