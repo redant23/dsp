@@ -20,8 +20,8 @@
   }
   
   .header {
-    @apply relative flex items-center justify-between mx-auto;
-    max-width: 1200px;
+    @apply max-w-7xl relative flex items-center justify-between mx-auto;
+    
     height: 3rem;
 
     img {

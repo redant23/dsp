@@ -4,63 +4,51 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import { FiMenu, FiX } from 'react-icons/fi'; // 아이콘 사용
+import { FiMenu, FiX } from 'react-icons/fi';
 
 import ThemeToggle from "@src/components/ThemeToggle";
 import styles from '@src/styles/components/Header.module.scss';
-
 
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+
   const handleRouteChange = () => {
     setMenuOpen(false);
   };
 
-  const checkLoginStatus = () => {
-    const hasToken = localStorage.getItem('token') !== null;
-    const tokenExpired = isTokenExpired(localStorage.getItem('token'));
+  const checkLoginStatus = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setIsLoggedIn(false);
+      return;
+    }
 
-    if (hasToken && !tokenExpired) {
-      setIsLoggedIn(true);
-    } else {
+    try {
+      const response = await fetch('/api/auth/status', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+        localStorage.removeItem('token'); // 만료된 토큰 제거
+      }
+    } catch (error) {
+      console.error('Failed to check token:', error);
       setIsLoggedIn(false);
     }
-  };
-
-  const isTokenExpired = (token: string | null): boolean => {
-    if (!token) return true;
-    
-    const parts = token.split('.');
-    if (parts.length !== 3) return true; // 유효하지 않은 토큰 구조
-
-    const base64Url = parts[1];
-    if (!base64Url) return true; // 페이로드 부분이 없는 경우
-
-    // base64Url 형식 검증
-    const base64UrlRegex = /^[A-Za-z0-9-_]+$/;
-    if (!base64UrlRegex.test(base64Url)) return true; // 유효하지 않은 base64Url 형식
-
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-  
-    const { exp } = JSON.parse(jsonPayload);
-    const expired = Date.now() >= exp * 1000;
-    
-    return expired;
   };
 
   useEffect(() => {
     handleRouteChange();
     checkLoginStatus();
-
-    return () => {
-      // 클린업 함수 (필요한 경우)
-    };
   }, [pathname]);
 
   const handleMenuClick = () => {
@@ -115,7 +103,6 @@ const Header: React.FC = () => {
           </ul>
         </nav>
       </div>
-      
     </header>
   );
 };
