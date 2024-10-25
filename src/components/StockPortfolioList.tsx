@@ -111,8 +111,8 @@ const StockPortfolioList: React.FC<StockPortfolioListProps> = ({ exchangeRate }:
         <h1 className="text-2xl font-bold">주식 포트폴리오</h1>
         <div>
           <span className="mr-4">{currentDate} 기준</span>
-          <span className="mr-4">매수환율: {exchangeRate.buy}원</span>
-          <span>매도환율: {exchangeRate.sell}원</span>
+          <span className="mr-4">매수환율: {exchangeRate.buy.toLocaleString()}원</span>
+          <span>매도환율: {exchangeRate.sell.toLocaleString()}원</span>
         </div>
       </div>
 

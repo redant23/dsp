@@ -6,17 +6,16 @@ import StockPortfolioList from '@src/components/StockPortfolioList';
 import { User, ExchangeRate } from '@src/types';
 
 const LandingPage = ({ user }: { user: User | null }) => {
-  const [exchangeRate, setExchangeRate] = useState<ExchangeRate>({ buy: 500, sell: 400 });
+  const [exchangeRate, setExchangeRate] = useState<ExchangeRate>({ buy: 0, sell: 0 });
 
   useEffect(() => {
     const fetchExchangeRates = async () => {
       try {
         const response = await fetch('/api/exchangeRate');
         const data = await response.json();
-        const usd = data.find((item: { cur_unit: string }) => item.cur_unit === 'USD');
-        console.log(`매수 환율: ${usd.ttb}`);
-        console.log(`매도 환율: ${usd.tts}`);
-        setExchangeRate({ buy: usd.ttb, sell: usd.tts });
+        const buy = Number(data.buy.replace(/,/g, ''));
+        const sell = Number(data.sell.replace(/,/g, ''));
+        setExchangeRate({ buy, sell });
       } catch (error) {
         console.error('환율 정보를 가져오는 데 실패했습니다:', error);
       }
