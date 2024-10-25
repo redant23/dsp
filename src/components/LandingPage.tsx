@@ -11,7 +11,7 @@ const LandingPage = ({ user }: { user: User | null }) => {
   useEffect(() => {
     const fetchExchangeRates = async () => {
       try {
-        const response = await fetch(`https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=${process.env.NEXT_PUBLIC_EXCHANGE_API_KEY}&data=AP01`);
+        const response = await fetch('/api/exchangeRate');
         const data = await response.json();
         const usd = data.find((item: { cur_unit: string }) => item.cur_unit === 'USD');
         console.log(`매수 환율: ${usd.ttb}`);

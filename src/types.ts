@@ -15,3 +15,10 @@ export interface ExchangeRate {
 export interface StockPortfolioListProps {
   exchangeRate: ExchangeRate;
 }
+
+// RequestInit 인터페이스 확장
+declare global {
+  interface RequestInit {
+    agent?: any;
+  }
+}
