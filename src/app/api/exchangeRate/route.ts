@@ -31,9 +31,9 @@ export async function GET(req: NextRequest) {
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64)');
     
     console.log('KB 환율 페이지로 이동 중...');
-    await page.goto('https://obank.kbstar.com/quics?page=C101425', {
+    await page.goto('https://obank.kbstar.com/quics?page=C101335', {
       waitUntil: 'domcontentloaded',
-      timeout: 30000,
+      timeout: 60000,
     });
 
     console.log('환율 정보 요소 대기 중...');

@@ -40,29 +40,48 @@ const nextConfig = {
         ],
       },
       {
+        // public/manifest.webmanifest
         source: '/manifest.webmanifest',
         headers: [
           {
             key: 'Content-Type',
             value: 'application/manifest+json',
           },
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*'
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'private-state-token-redemption=(), private-state-token-issuance=(), browsing-topics=()'
+          }
         ],
       },
       {
+        // src/app/favicon.ico
         source: '/favicon.ico',
         headers: [
           {
             key: 'Content-Type',
             value: 'image/x-icon',
           },
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*'
+          }
         ],
       },
       {
+        // src/app/favicon.svg 
         source: '/favicon.svg',
         headers: [
           {
             key: 'Content-Type',
             value: 'image/svg+xml',
+          },
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*'
           },
         ],
       },
