@@ -1,8 +1,9 @@
+@use "@src/styles/variables" as *;
+@use "@src/styles/mixins" as *;
+
 @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/earlyaccess/notosanskr.css');
 
-@import "@src/styles/variables.scss";
-@import "@src/styles/mixins.scss";
 
 @tailwind base;
 @tailwind components;

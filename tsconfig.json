@@ -4,7 +4,7 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
-    "noEmit": true,
+    "noEmit": false,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
@@ -17,12 +17,22 @@
         "name": "next"
       }
     ],
-    "baseUrl": ".",  // 프로젝트 루트 디렉토리를 기준으로 설정
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],  // "src" 디렉토리를 가리키도록 설정
-      "@src/*": ["src/*"] 
-    }
+      "@/*": ["./*"],
+      "@src/*": ["src/*"]
+    },
+    "target": "ES2017",
+    "outDir": "./dist"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/**/*", "postcss.config.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/**/*",
+    "lib/**/*",
+    "postcss.config.js"
+  ],
   "exclude": ["node_modules"]
 }

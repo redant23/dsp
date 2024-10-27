@@ -20,6 +20,8 @@ const Header: React.FC = () => {
   };
 
   const checkLoginStatus = async () => {
+    if (typeof window === 'undefined') return;
+    
     const token = localStorage.getItem('token');
     if (!token) {
       setIsLoggedIn(false);
@@ -38,10 +40,10 @@ const Header: React.FC = () => {
         setIsLoggedIn(true);
       } else {
         setIsLoggedIn(false);
-        localStorage.removeItem('token'); // 만료된 토큰 제거
+        localStorage.removeItem('token');
       }
     } catch (error) {
-      console.error('Failed to check token:', error);
+      console.error('토큰 확인 실패:', error);
       setIsLoggedIn(false);
     }
   };
@@ -56,7 +58,9 @@ const Header: React.FC = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('token');
+    }
     setIsLoggedIn(false);
     router.push('/login');
   };
@@ -68,7 +72,7 @@ const Header: React.FC = () => {
           <div className={styles.headerTitleLink}>
             <Image
               src="/dsp-logo.svg"
-              alt="logo"
+              alt="로고"
               width={140}
               height={30}
               priority

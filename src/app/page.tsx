@@ -9,8 +9,10 @@ export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
     const checkLoginStatus = async () => {
       const token = localStorage.getItem('token');
       if (!token) {
@@ -29,8 +31,8 @@ export default function Home() {
 
         if (!response.ok) {
           setIsLoggedIn(false);
-          localStorage.removeItem('token'); // 만료된 토큰 제거
-          router.push('/login'); // 로그인 페이지로 리다이렉트
+          localStorage.removeItem('token');
+          router.push('/login');
           return;
         }
 
@@ -38,21 +40,25 @@ export default function Home() {
         setIsLoggedIn(data.isAuthenticated);
         setUser(data.user);
       } catch (error) {
-        console.error('Error checking login status:', error);
+        console.error('로그인 상태 확인 오류:', error);
         setIsLoggedIn(false);
-        router.push('/login'); // 오류 발생 시 로그인 페이지로 리다이렉트
+        router.push('/login');
       }
     };
 
     checkLoginStatus();
   }, [router]);
 
+  if (!isClient) {
+    return null;
+  }
+
   if (!isLoggedIn) {
-    return null; // 로그인되지 않은 경우 리다이렉트 처리 중
+    return null;
   }
 
   return (
-    <div className="max-xl:px-4 mx-auto max-w-screen-xl  bg-primary">
+    <div className="max-xl:px-4 mx-auto max-w-screen-xl bg-primary">
       <LandingPage user={user} />
     </div>
   );

@@ -5,11 +5,28 @@ import { execSync } from 'child_process';
 const nextConfig = {
   reactStrictMode: true,
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
-  // 빌드 ID 생성 함수 추가
   generateBuildId: async () => {
-    // 마지막 커밋 해시를 빌드 ID로 사용
     return execSync('git rev-parse HEAD').toString().trim();
-  }
+  },
+  webpack: (config, { isServer }) => {
+    // ts-loader 설정 추가
+    config.module.rules.push({
+      test: /\.ts$/,
+      use: 'ts-loader',
+      exclude: /node_modules/,
+    });
+
+    config.resolve.extensions.push('.ts');
+
+    // .map 파일을 chrome-aws-lambda 패키지에서만 무시하도록 설정
+    config.module.rules.push({
+      test: /\.map$/,
+      use: 'null-loader',
+      include: /node_modules\/chrome-aws-lambda/, // 특정 패키지에만 적용
+    });
+
+    return config;
+  },
 };
 
 export default withSvgr(nextConfig);

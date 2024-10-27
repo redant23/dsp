@@ -1,28 +1,37 @@
-
 import { NextRequest, NextResponse } from 'next/server';
+import chromium from 'chrome-aws-lambda';
 import puppeteer from 'puppeteer';
 
 export async function GET(req: NextRequest) {
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
-  });
-  const page = await browser.newPage();
+  let browser = null;
 
   try {
-    // KB국민은행 환율 페이지로 이동
+    browser = await puppeteer.launch({
+      args: [
+        ...chromium.args,
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--single-process',
+      ],
+      defaultViewport: chromium.defaultViewport,
+      executablePath: process.env.NODE_ENV === 'production' ? await chromium.executablePath : puppeteer.executablePath(),
+      headless: true,
+      timeout: 60000, // 1분
+    });
+
+    const page = await browser.newPage();
+    
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64)');
     await page.goto('https://obank.kbstar.com/quics?page=C101425', {
       waitUntil: 'domcontentloaded',
-      timeout: 30000, // 30초
+      timeout: 30000,
     });
-    
-    // div#b101921 요소가 로드될 때까지 기다림
-    await page.waitForSelector('#b101921');
 
-    // 해당 요소의 텍스트 추출
+    await page.waitForSelector('#b101921', { timeout: 15000 });
     const exchangeRateText = await page.$eval('#b101921', (el) => (el as HTMLElement).innerText);
-    
-    // 필요 값 추출: "사실때"와 "파실때"에 해당하는 첫 번째 값만 추출
+
     const regex = /(\d{1,3}(?:,\d{3})*\.\d{2})\s+(\d{1,3}(?:,\d{3})*\.\d{2})/;
     const matches = exchangeRateText.match(regex);
 
@@ -34,9 +43,11 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: '환율 데이터를 파싱할 수 없습니다.' }, { status: 500 });
     }
   } catch (error) {
-    console.error('Error fetching exchange rate:', error);
-    return NextResponse.json({ error: 'Failed to fetch exchange rate' }, { status: 500 });
+    console.error('환율 정보 가져오기 실패:', error);
+    return NextResponse.json({ error: '환율 정보를 가져오는데 실패했습니다.' }, { status: 500 });
   } finally {
-    await browser.close();
+    if (browser !== null) {
+      await browser.close();
+    }
   }
 }

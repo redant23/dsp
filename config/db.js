@@ -30,8 +30,7 @@ export async function connectToDatabase() {
     throw e;
   }
 
-  console.log('DB 연결됨:', cached.conn.connection);
-  console.log('컬렉션 목록:', Object.keys(cached.conn.connection.collections));
+  console.log('DB 연결됨');
 
   return cached.conn;
 }
