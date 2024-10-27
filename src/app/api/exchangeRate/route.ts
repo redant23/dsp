@@ -47,8 +47,8 @@ export async function GET(req: NextRequest) {
     await page.setJavaScriptEnabled(true);
     
     await page.goto('https://www.kita.net/cmmrcInfo/ehgtGnrlzInfo/rltmEhgt.do', {
-      waitUntil: ['domcontentloaded', 'networkidle0'],
-      timeout: 90000, // Lambda 제한시간 고려하여 90초로 설정
+      waitUntil: ['domcontentloaded'],
+      timeout: 120000, // Lambda 제한시간 고려하여 90초로 설정
     });
     
     // 페이지 로드 후 상태 확인
