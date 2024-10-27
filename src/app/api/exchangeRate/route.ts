@@ -15,7 +15,6 @@ export async function GET(req: NextRequest) {
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath(),
         headless: true,
-        ignoreHTTPSErrors: true,
       });
     } else {
       browser = await puppeteer.launch({
