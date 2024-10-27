@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import chromium from 'chrome-aws-lambda';
+import chromium from '@sparticuz/chromium';
 import puppeteer from 'puppeteer-core';
 import { Browser } from 'puppeteer-core';
 
@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
       browser = await puppeteer.launch({
         args: chromium.args,
         defaultViewport: chromium.defaultViewport,
-        executablePath: await chromium.executablePath,
+        executablePath: await chromium.executablePath(),
         headless: true,
         ignoreHTTPSErrors: true,
       });
