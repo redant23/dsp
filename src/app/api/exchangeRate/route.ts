@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
       console.log('개발 환경에서 로컬 Chrome 실행 중...');
       browser = await puppeteer.launch({
         headless: true,
-        executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', // 로컬 Chrome 실행 파일 경로 지정
+        executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
       });
     }
 
@@ -30,35 +30,34 @@ export async function GET(req: NextRequest) {
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
     
-    console.log('KB 환율 페이지로 이동 중...');
-    await page.goto('https://obank.kbstar.com/quics?page=C101335', {
+    console.log('KITA 환율 페이지로 이동 중...');
+    await page.goto('https://www.kita.net/cmmrcInfo/ehgtGnrlzInfo/rltmEhgt.do', {
       waitUntil: 'domcontentloaded',
       timeout: 60000,
     });
 
     console.log('환율 정보 요소 대기 중...');
-    await page.waitForSelector('#b101921', { timeout: 15000 });
-    const element = await page.$('#b101921');
-
-    if (!element) {
-      console.error('환율 정보 요소를 찾을 수 없습니다.');
-      throw new Error("요소를 찾을 수 없습니다");
-    }
+    await page.waitForSelector('.table-wrap-outline tbody tr:first-child', { timeout: 15000 });
 
     console.log('환율 정보 추출 중...');
-    const exchangeRateText = await page.evaluate((el) => (el as HTMLElement).innerText, element);
+    const exchangeRateData = await page.evaluate(() => {
+      const firstRow = document.querySelector('.table-wrap-outline tbody tr:first-child');
+      if (!firstRow) return null;
 
-    // 정규식으로 환율 정보 파싱
-    const regex = /(\d{1,3}(?:,\d{3})*\.\d{2})\s+(\d{1,3}(?:,\d{3})*\.\d{2})/;
-    const matches = exchangeRateText.match(regex);
+      const tds = firstRow.querySelectorAll('td');
+      if (tds.length < 5) return null;
 
-    if (matches && matches.length >= 3) {
-      const buy = matches[1];
-      const sell = matches[2];
-      console.log('환율 정보 추출 성공:', { buy, sell });
-      return NextResponse.json({ buy, sell });
+      return {
+        buy: tds[3].textContent?.trim(),
+        sell: tds[4].textContent?.trim()
+      };
+    });
+
+    if (exchangeRateData && exchangeRateData.buy && exchangeRateData.sell) {
+      console.log('환율 정보 추출 성공:', exchangeRateData);
+      return NextResponse.json(exchangeRateData);
     } else {
-      console.error('환율 데이터 파싱 실패:', exchangeRateText);
+      console.error('환율 데이터 파싱 실패');
       return NextResponse.json({ error: '환율 데이터를 파싱할 수 없습니다.' }, { status: 500 });
     }
   } catch (error) {
