@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { ImageResponse } from 'next/og'
 import { Analytics } from '@vercel/analytics/react';
 
 import '@src/styles/globals.scss';
