@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/exchangeRate.ts": {
+    "src/app/api/exchangeRate/route.ts": {
       "memory": 1024,
       "maxDuration": 10
     }
