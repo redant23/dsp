@@ -31,10 +31,29 @@ export async function GET(req: NextRequest) {
     await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
     
     console.log('KITA 환율 페이지로 이동 중...');
-    await page.goto('https://www.kita.net/cmmrcInfo/ehgtGnrlzInfo/rltmEhgt.do', {
-      waitUntil: 'domcontentloaded',
-      timeout: 60000,
+    // 프로덕션(Vercel) vs 로컬 환경의 주요 차이점:
+    // 1. 프로덕션은 serverless 환경으로 메모리/CPU 제한이 있음
+    // 2. 프로덕션은 AWS Lambda를 통해 실행되어 네트워크 latency가 다름
+    // 3. 프로덕션은 Chromium을 사용하고, 로컬은 설치된 Chrome을 사용
+    
+    // 디버깅을 위한 네트워크 요청 로깅
+    await page.setRequestInterception(true);
+    page.on('request', request => {
+      console.log(`요청 URL: ${request.url()}`);
+      request.continue();
     });
+    
+    // 페이지 로드 전에 JavaScript 활성화 확인
+    await page.setJavaScriptEnabled(true);
+    
+    await page.goto('https://www.kita.net/cmmrcInfo/ehgtGnrlzInfo/rltmEhgt.do', {
+      waitUntil: ['domcontentloaded', 'networkidle0'],
+      timeout: 90000, // Lambda 제한시간 고려하여 90초로 설정
+    });
+    
+    // 페이지 로드 후 상태 확인
+    const pageTitle = await page.title();
+    console.log('페이지 타이틀:', pageTitle);
 
     console.log('환율 정보 요소 대기 중...');
     await page.waitForSelector('.table-wrap-outline tbody tr:first-child', { timeout: 15000 });
