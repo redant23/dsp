@@ -23,10 +23,14 @@ export async function GET(req: NextRequest) {
 
     const context = await browser.newContext();
     const page = await context.newPage();
+
+    page.on('request', (req) => {
+      console.log('Request:', req.url());
+    });
     
     await page.goto('https://www.kita.net/cmmrcInfo/ehgtGnrlzInfo/rltmEhgt.do', {
       waitUntil: 'domcontentloaded',
-      timeout: 30000
+      timeout: 120000
     });
     
     console.log('환율 정보 요소 대기 중...');
