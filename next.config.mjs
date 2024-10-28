@@ -9,14 +9,6 @@ const nextConfig = {
   generateBuildId: async () => {
     return execSync('git rev-parse HEAD').toString().trim();
   },
-  webpack: (config) => {
-    config.externals = config.externals || [];
-    config.externals.push(
-      "puppeteer-extra",
-      "puppeteer-extra-plugin-stealth"
-    );
-    return config;
-  },
   headers: async () => {
     return [
       {

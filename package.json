@@ -32,8 +32,7 @@
     "next-connect": "^1.0.0",
     "next-themes": "^0.3.0",
     "null-loader": "^4.0.1",
-    "puppeteer-extra": "^3.3.6",
-    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "playwright-extra": "^4.3.6",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.53.1",
@@ -56,16 +55,11 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.15",
     "next-svgr": "^0.0.2",
+    "playwright": "^1.48.2",
     "postcss": "^8",
     "postcss-import": "^16.1.0",
     "tailwindcss": "^3.4.1",
     "ts-loader": "^9.5.1",
     "typescript": "^5.6.3"
-  },
-  "pkg": {
-    "scripts": [
-      "node_modules/puppeteer/lib/*.js",
-      "node_modules/puppeteer-extra-plugin-stealth/**/*.js"
-    ]
   }
 }
