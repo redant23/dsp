@@ -1,36 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { chromium } from 'playwright';
+import playwright from 'playwright-core';
+import chromium from '@sparticuz/chromium';
 
 export async function GET(req: NextRequest) {
   let browser;
 
   try {
     console.log('환율 정보 크롤링 시작...');
+    chromium.setHeadlessMode = true;
     
-    browser = await chromium.launch({
-      headless: true,
-      args: [
-        '--no-sandbox',
-        '--disable-dev-shm-usage',
-      ],
-      // AWS Lambda 환경을 위한 추가 설정
-      executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || undefined
+    // Sparticuz/chromium 설정
+    browser = await playwright.chromium.launch({
+      args: chromium.args,
+      executablePath: await chromium.executablePath(),
+      headless: (chromium.headless || true) as boolean,
     });
 
-    const context = await browser.newContext({
-      userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
-    });
-
+    const context = await browser.newContext();
     const page = await context.newPage();
     
-    // 네트워크 요청 모니터링
-    page.on('request', request => {
-      console.log(`요청 URL: ${request.url()}`);
-    });
-
     await page.goto('https://www.kita.net/cmmrcInfo/ehgtGnrlzInfo/rltmEhgt.do', {
       waitUntil: 'domcontentloaded',
-      timeout: 120000
+      timeout: 30000
     });
     
     console.log('환율 정보 요소 대기 중...');

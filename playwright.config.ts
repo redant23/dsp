@@ -2,7 +2,7 @@ import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
   testDir: './e2e/tests', // 테스트 파일 위치
-  timeout: 30 * 1000, // 테스트 타임아웃
+  timeout: 30000, // 테스트 타임아웃
   expect: {
     timeout: 5000, // expect() 타임아웃
   },
@@ -18,6 +18,5 @@ export default defineConfig({
     baseURL: process.env.BASE_URL || 'http://localhost:3000',
     trace: 'on-first-retry', // 실패한 테스트의 트레이스 저장
     screenshot: 'only-on-failure', // 실패한 테스트의 스크린샷 저장
-    video: 'on-first-retry', // 실패한 테스트의 비디오 저장
   },
 });
