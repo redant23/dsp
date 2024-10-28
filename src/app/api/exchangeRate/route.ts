@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
     
     await page.goto('https://www.kita.net/cmmrcInfo/ehgtGnrlzInfo/rltmEhgt.do', {
       waitUntil: 'domcontentloaded',
-      timeout: 120000
+      timeout: 240000
     });
     
     console.log('환율 정보 요소 대기 중...');
