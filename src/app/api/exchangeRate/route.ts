@@ -15,7 +15,9 @@ export async function GET(req: NextRequest) {
         '--disable-dev-shm-usage',
         '--disable-accelerated-2d-canvas',
         '--disable-gpu',
-      ]
+      ],
+      // AWS Lambda 환경을 위한 추가 설정
+      executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || undefined
     });
 
     const context = await browser.newContext({
