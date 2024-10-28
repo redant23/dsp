@@ -35,8 +35,8 @@ const LandingPage = ({ user }: { user: User | null }) => {
   }
 
   return (
-    <div className="mt-24 mx-auto bg-primary pt-24">
-      <h1 className="text-lg mb-10 font-bold text-primary-foreground">환영합니다, {user?.nickname || ''} 님!</h1>
+    <div className="mt-24 mx-auto bg-secondary pt-24">
+      <h1 className="text-lg mb-10 font-bold text-secondary-foreground">환영합니다, {user?.nickname || ''} 님!</h1>
       <StockPortfolioList exchangeRate={exchangeRate} />
     </div>
   );
