@@ -1,46 +1,47 @@
 import { NextRequest, NextResponse } from 'next/server';
-import chromium from '@sparticuz/chromium';
-import puppeteer from 'puppeteer-core';
-import { Browser } from 'puppeteer-core';
 
 export async function GET(req: NextRequest) {
-  let browser: Browser | null = null;
+  let browser;
 
   try {
     console.log('환율 정보 크롤링 시작...');
-    const isProduction = process.env.NODE_ENV === 'production';
-
-    if (isProduction) {
-      console.log('프로덕션 환경에서 브라우저 실행 중...');
-      browser = await puppeteer.launch({
-        args: chromium.args,
-        defaultViewport: chromium.defaultViewport,
-        executablePath: await chromium.executablePath(),
-        headless: true,
-      });
-    } else {
-      console.log('개발 환경에서 로컬 Chrome 실행 중...');
-      browser = await puppeteer.launch({
-        headless: true,
-        executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-      });
-    }
+    
+    // 동적 임포트로 변경
+    const puppeteer = (await import('puppeteer-extra')).default;
+    const StealthPlugin = (await import('puppeteer-extra-plugin-stealth')).default;
+    
+    puppeteer.use(StealthPlugin());
+    
+    browser = await puppeteer.launch({
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--disable-gpu'
+      ]
+    });
 
     console.log('새 페이지 생성 중...');
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
     
     console.log('KITA 환율 페이지로 이동 중...');
-    // 프로덕션(Vercel) vs 로컬 환경의 주요 차이점:
-    // 1. 프로덕션은 serverless 환경으로 메모리/CPU 제한이 있음
-    // 2. 프로덕션은 AWS Lambda를 통해 실행되어 네트워크 latency가 다름
-    // 3. 프로덕션은 Chromium을 사용하고, 로컬은 설치된 Chrome을 사용
-    
-    // 디버깅을 위한 네트워크 요청 로깅
+        
     await page.setRequestInterception(true);
-    page.on('request', request => {
+    
+    page.on('request', (request: any) => {
       console.log(`요청 URL: ${request.url()}`);
       request.continue();
+    });
+
+    page.on('load', () => {
+      console.log('페이지 로드 완료 (모든 리소스)');
+    });
+
+    page.on('networkidle0', () => {
+      console.log('네트워크 요청 없음 (500ms)');
     });
     
     // 페이지 로드 전에 JavaScript 활성화 확인
