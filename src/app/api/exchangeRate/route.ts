@@ -6,13 +6,18 @@ export async function GET(req: NextRequest) {
   let browser;
 
   try {
+    process.env.DEBUG = 'pw:browser';
     console.log('환율 정보 크롤링 시작...');
     chromium.setHeadlessMode = true;
+
+    const executablePath = process.env.ENV === 'local'
+      ? playwright.chromium.executablePath()
+      : await chromium.executablePath();
     
     // Sparticuz/chromium 설정
     browser = await playwright.chromium.launch({
-      args: chromium.args,
-      executablePath: await chromium.executablePath(),
+      args: [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox'],
+      executablePath,
       headless: (chromium.headless || true) as boolean,
     });
 
