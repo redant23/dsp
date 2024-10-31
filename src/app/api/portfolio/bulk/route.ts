@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { IUserStock, UserStock } from '@src/models/userStock';
 import { connectToDatabase } from 'lib/mongodb';
-import { authOptions } from '../../auth/[...nextauth]/route';
+import { authOptions } from 'lib/auth';
 
 export async function PUT(request: Request) {
   try {
