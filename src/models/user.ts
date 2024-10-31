@@ -3,6 +3,7 @@ import mongoose, { Document, Schema } from 'mongoose';
 const cellPhoneOnlyRegex = /^01\d-\d{4}-\d{4}$/; // 폰번호만 허용
 
 interface IUser extends Document {
+  id?: string;
   email: string;
   nickname: string;
   passwordHash: string;
@@ -32,6 +33,7 @@ interface IUser extends Document {
 }
 
 const userSchema = new Schema<IUser>({
+  id: { type: String },
   nickname: { type: String },
   email: { type: String, required: true, unique: true },
   passwordHash: { type: String, required: true },

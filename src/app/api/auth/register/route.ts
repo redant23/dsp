@@ -1,31 +1,42 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { connectToDatabase } from 'config/db';
+import { connectToDatabase } from 'lib/mongodb';
 import User from '@src/models/user';
 
 export async function POST(request: NextRequest) {
-
-  await connectToDatabase();
-  
-  const { email, password, nickname, phone } = await request.json();
-
   try {
+    const { email, password, nickname, phone } = await request.json();
+    await connectToDatabase();
 
-    const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash(password, salt);
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return NextResponse.json(
+        { message: "이미 등록된 이메일입니다" },
+        { status: 400 }
+      );
+    }
 
-    const newUser = new User({
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const user = await User.create({
       nickname,
       email,
-      passwordHash,
       profile: {
-        phone: phone,
+        phone,
       },
+      passwordHash: hashedPassword,
     });
-    await User.create(newUser);
-    return NextResponse.json({ success: true }, { status: 201 });
+
+    return NextResponse.json(
+      { 
+        message: "회원가입이 완료되었습니다",
+        success: true
+       },
+      { status: 201 }
+    );
   } catch (error) {
-    console.error('회원가입 오류:', error);
-    return NextResponse.json({ message: '서버 오류가 발생했습니다.' }, { status: 500 });
+    return NextResponse.json(
+      { message: "회원가입 중 오류가 발생했습니다" },
+      { status: 500 }
+    );
   }
-};
+}

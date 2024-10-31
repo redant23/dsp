@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectToDatabase } from 'config/db';
+import { connectToDatabase } from 'lib/mongodb';
 import User from '@src/models/user';
-
 
 export async function POST(request: NextRequest) {
   try {

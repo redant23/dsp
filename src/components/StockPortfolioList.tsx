@@ -1,27 +1,31 @@
 'use client';
 
+import mongoose from 'mongoose';
 import React,{ useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@src/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@src/components/ui/select";
 import { Button } from "@src/components/ui/button";
 import { Input } from "@src/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@src/components/ui/dialog";
-import { X, Plus, CalendarIcon } from 'lucide-react';
+import { X, Plus, CalendarIcon, ListX } from 'lucide-react';
 import { StockPortfolioListProps, ExchangeRate } from '@src/types';
-import { getStockInfo } from './getStockInfo';
 import { Calendar } from "@src/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@src/components/ui/popover";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
+import { useSession } from 'next-auth/react';
 
 const formatDate = (date: Date) => {
   return date.toISOString().split('T')[0].replace(/-/g, '.');
 };
 
-type Stock = {
-  id: number;
-  status: '보유예정' | '보유중' | '매도';
-  purchaseDate: Date;
+type PortfolioStock = {
+  _id?: string; // userStock id
+  user: mongoose.Types.ObjectId | object | string; // user Object id 혹은 user Object
+  stock: mongoose.Types.ObjectId | object | string; // stock Object id 혹은 stock Object
+  status: string;
+  purchaseDate?: Date;
+  sellDate?: Date;
   category: string;
   name: string;
   ticker: string;
@@ -32,61 +36,77 @@ type Stock = {
   quantity: number;
   totalCostKRW: number;
   totalDividend: number;
+  lastYearTotalDividend: string;
+  currentYearTotalDividend: string;
   paymentMonth: string;
 };
 
 const StockPortfolioList: React.FC<StockPortfolioListProps> = ({ exchangeRate }: { exchangeRate: ExchangeRate }) => {
-  const [stocks, setStocks] = useState<Stock[]>([]);
+  const [userStocks, setUserStocks] = useState<PortfolioStock[]>([]);
   const [filter, setFilter] = useState<'전체' | '보유예정' | '보유중' | '매도'>('전체');
   const [newTicker, setNewTicker] = useState('');
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [stockToDelete, setStockToDelete] = useState<number | null>(null);
-  const [currentDate, setCurrentDate] = useState(formatDate(new Date()));
-
+  const [stockToDelete, setStockToDelete] = useState<string | null>(null);
+  const [currentDate] = useState(formatDate(new Date()));
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDirty, setIsDirty] = useState(false);
+  const { data: session } = useSession();
+  
   useEffect(() => {
-    // 여기서 실제 API 호출을 통해 주식 데이터를 가져올 수 있습니다.
-    setStocks([
-      {
-        id: 1,
-        status: '보유중',
-        purchaseDate: new Date('2023-01-01'),
-        category: '기술',
-        name: '애플',
-        ticker: 'AAPL',
-        priceUSD: 150,
-        dividendUSD: 0.88,
-        priceKRW: 195000,
-        dividendYield: 0.59,
-        quantity: 10,
-        totalCostKRW: 1950000,
-        totalDividend: 8800,
-        paymentMonth: '2,5,8,11'
-      },
-      // 더 많은 주식 데이터...
-    ]);
+    fetchPortfolio();
   }, []);
 
-  const filteredStocks = filter === '전체' ? stocks : stocks.filter(stock => stock.status === filter);
-
-  const handleStatusChange = (id: number, newStatus: '보유예정' | '보유중' | '매도') => {
-    setStocks(stocks.map(stock =>
-      stock.id === id ? { ...stock, status: newStatus } : stock
-    ));
+  const fetchPortfolio = async () => {
+    try {
+      const response = await fetch('/api/portfolio');
+      if (!response.ok) throw new Error('포트폴리오 로드 실패');
+      const data = await response.json();
+      setUserStocks(data);
+    } catch (error) {
+      console.error('포트폴리오 로드 중 오류:', error);
+    }
   };
 
-  const handleDelete = (id: number) => {
-    setStockToDelete(id);
+  const filteredStocks = filter === '전체' ? userStocks : userStocks.filter(userStock => userStock.status === filter);
+
+  const handleStatusChange = (_id: string, newStatus: string) => {
+    setUserStocks(userStocks.map(userStock =>
+      userStock._id === _id ? { ...userStock, status: newStatus } : userStock
+    ));
+    setIsDirty(true);
+  };
+
+  const handleQuantityChange = (_id: string, newQuantity: number) => {
+    setUserStocks(userStocks.map(s => {
+      if (s._id === _id) {
+        const totalCostKRW = newQuantity * Math.round(s.priceUSD * exchangeRate.buy);
+        const totalDividend = Math.round(s.dividendUSD * newQuantity * exchangeRate.sell);
+        return {
+          ...s,
+          quantity: newQuantity,
+          totalCostKRW,
+          totalDividend
+        };
+      }
+      return s;
+    }));
+    setIsDirty(true);
+  };
+
+  const handleDelete = (_id: string) => {
+    setStockToDelete(_id);
     setIsDeleteModalOpen(true);
   };
 
   const confirmDelete = () => {
     if (stockToDelete !== null) {
-      setStocks(stocks.filter(stock => stock.id !== stockToDelete));
+      setUserStocks(userStocks.filter(userStock => userStock._id !== stockToDelete));
       setIsDeleteModalOpen(false);
       setStockToDelete(null);
     }
   };
 
+  // UserStock에 주식 추가, Stock DB에 해당 주식 없는 경우 함께 추가
   const handleAddStock = async () => {
     try {
       if (!newTicker) {
@@ -94,42 +114,127 @@ const StockPortfolioList: React.FC<StockPortfolioListProps> = ({ exchangeRate }:
         return;
       }
 
-      const stockInfo = await getStockInfo(newTicker.toUpperCase());
-      
-      if (!stockInfo) {
-        alert('주식 정보를 가져오는데 실패했습니다.');
+      // 현재 입력한 종목이 이미 목록에 존재하는 종목인지 확인
+      const existingStock = userStocks.find(stock => stock.ticker === newTicker.toUpperCase());
+      if (existingStock) {
+        alert('이미 목록에 존재하는 종목입니다.');
         return;
       }
 
-      const priceUSD = stockInfo.regularMarketPrice || 0;
-      const dividendUSD = stockInfo.trailingAnnualDividendRate || 0;
-      const priceKRW = Math.round(priceUSD * exchangeRate.buy);
-      const dividendYield = dividendUSD ? ((dividendUSD / priceUSD) * 100) : 0;
+      // Stock DB에 종목 존재여부 조회
+      const response = await fetch(`/api/stock?ticker=${newTicker.toUpperCase()}`);
+      let stockInfo = await response.json();
+      
+      
+      // 409 에러인 경우(업데이트 주기가 지난 상황) PUT 요청으로 Stock DB 업데이트
+      if (response.status === 409) {
+        const updateResponse = await fetch(`/api/stock?ticker=${newTicker.toUpperCase()}`, {
+          method: 'PUT'
+        });
+        if (!updateResponse.ok) {
+          alert('주식 정보 업데이트에 실패했습니다.');
+          return;
+        }
+        stockInfo = await updateResponse.json();
+      }
 
-      const newStock: Stock = {
-        id: stocks.length + 1,
+      // stock DB에 종목 정보가 없는 경우(새로 생성된 종목) POST 요청으로 Stock DB 새로 생성
+      if (response.status === 400) {
+        const createResponse = await fetch(`/api/stock?ticker=${newTicker.toUpperCase()}`, {
+          method: 'POST'
+        });
+        
+        if (!createResponse.ok) {
+          const errorData = await createResponse.json();
+          console.log('createResponse error:', errorData);
+          alert('새로운 주식 정보 생성에 실패했습니다.');
+          return;
+        }
+        stockInfo = await createResponse.json();
+      }
+      
+      const priceUSD = stockInfo.price || 0;
+      const dividendUSD = stockInfo.dividendPerShare || 0;
+      const priceKRW = Math.round(priceUSD * exchangeRate.buy);
+      const dividendYield = stockInfo.dividendYield || 0;
+
+      console.log('stockInfo', stockInfo);
+      
+      const newStock: PortfolioStock = {
+        stock: stockInfo._id,
+        user: session?.user?.id || '',
         status: '보유예정',
-        purchaseDate: new Date(),
         category: stockInfo.sector || '미분류',
-        name: stockInfo.longName,
+        name: stockInfo.name,
         ticker: stockInfo.symbol,
         priceUSD: priceUSD,
-        dividendUSD: dividendUSD,
+        dividendUSD: Number(dividendUSD.toFixed(2)),
         priceKRW: priceKRW,
-        dividendYield: Number(dividendYield.toFixed(2)),
+        dividendYield: Number((dividendYield * 100).toFixed(2)),
         quantity: 1,
         totalCostKRW: priceKRW,
-        totalDividend: Math.round(dividendUSD * exchangeRate.buy),
-        paymentMonth: '확인 필요'
+        totalDividend: Math.round(dividendUSD * exchangeRate.sell),
+        lastYearTotalDividend: stockInfo.lastYearTotalDividend,
+        currentYearTotalDividend: stockInfo.currentYearTotalDividend,
+        paymentMonth: stockInfo.paymentMonths || '정보 없음'
       };
 
-      setStocks([...stocks, newStock]);
+      // newStock 데이터를 userStock DB에 추가
+      const res = await fetch('/api/portfolio', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newStock)
+      });
+
+      if (!res.ok) {
+        alert('주식 추가에 실패했습니다.');
+        return;
+      }
+
+      const newUserStock = await res.json();
+      console.log('newUserStock', newUserStock);
+      setUserStocks([...userStocks, newUserStock]);
       setNewTicker('');
     } catch (error) {
       console.error('주식 추가 중 오류 발생:', error);
       alert('주식 정보를 가져오는데 실패했습니다.');
     }
   };
+
+  const handleSave = async () => {
+    setIsLoading(true);
+    try {
+      // 모든 수정된 주식 데이터를 한 번에 전송
+      const response = await fetch('/api/portfolio/bulk', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userStocks.map((userStock: any) => ({
+            _id: userStock._id,
+            user: userStock.user,
+            stock: userStock.stock._id,
+            status: userStock.status,
+            quantity: userStock.quantity,
+            purchaseDate: userStock.purchaseDate,
+            sellDate: userStock.sellDate,
+            updatedAt: new Date()
+        })))
+      });
+  
+      if (!response.ok) {
+        throw new Error('포트폴리오 업데이트 실패');
+      }
+  
+      setIsDirty(false);
+    } catch (error) {
+      console.error('저장 중 오류:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    console.log('userStocks업데이트', userStocks);
+  }, [userStocks]);
 
   return (
     <div className="container mx-auto p-4">
@@ -156,107 +261,106 @@ const StockPortfolioList: React.FC<StockPortfolioListProps> = ({ exchangeRate }:
         </Select>
       </div>
 
-      <Table>
-        <TableHeader className="bg-accent/50">
-          <TableRow>
-            <TableHead>상태</TableHead>
-            <TableHead>구매일자</TableHead>
-            <TableHead>카테고리</TableHead>
-            <TableHead>종목명</TableHead>
-            <TableHead>티커</TableHead>
-            <TableHead>주당 가격($)</TableHead>
-            <TableHead>주당 배당금($)</TableHead>
-            <TableHead>주당 가격(₩)</TableHead>
-            <TableHead>배당율</TableHead>
-            <TableHead>보유 수량</TableHead>
-            <TableHead>주식 구매비용(₩)</TableHead>
-            <TableHead>총 배당 금액</TableHead>
-            <TableHead>지급월</TableHead>
-            <TableHead>삭제</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {filteredStocks.map((stock) => (
-            <TableRow key={stock.id}>
-              <TableCell>
-                <Select value={stock.status} onValueChange={(value: any) => handleStatusChange(stock.id, value)}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="보유예정">보유예정</SelectItem>
-                    <SelectItem value="보유중">보유중</SelectItem>
-                    <SelectItem value="매도">매도</SelectItem>
-                  </SelectContent>
-                </Select>
-              </TableCell>
-              <TableCell>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="outline" className="w-[180px] justify-start text-left font-normal">
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {format(stock.purchaseDate, 'yyyy.MM.dd')}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
-                    <Calendar
-                      mode="single"
-                      selected={stock.purchaseDate}
-                      onSelect={(date) => {
-                        if (date) {
-                          setStocks(stocks.map(s =>
-                            s.id === stock.id ? { ...s, purchaseDate: date } : s
-                          ));
-                        }
-                      }}
-                      locale={ko}
-                    />
-                  </PopoverContent>
-                </Popover>
-              </TableCell>
-              <TableCell>{stock.category}</TableCell>
-              <TableCell>{stock.name}</TableCell>
-              <TableCell>{stock.ticker}</TableCell>
-              <TableCell>{stock.priceUSD}</TableCell>
-              <TableCell>{stock.dividendUSD}</TableCell>
-              <TableCell>{stock.priceKRW}</TableCell>
-              <TableCell>{stock.dividendYield}%</TableCell>
-              <TableCell>
-                <Input
-                  type="number"
-                  min="1"
-                  value={stock.quantity}
-                  onChange={(e) => {
-                    const newQuantity = parseInt(e.target.value) || 1;
-                    setStocks(stocks.map(s => {
-                      if (s.id === stock.id) {
-                        const totalCostKRW = newQuantity * s.priceKRW;
-                        const totalDividend = Math.round(s.dividendUSD * newQuantity * exchangeRate.sell);
-                        return {
-                          ...s,
-                          quantity: newQuantity,
-                          totalCostKRW,
-                          totalDividend
-                        };
-                      }
-                      return s;
-                    }));
-                  }}
-                  className="w-20"
-                />
-              </TableCell>
-              <TableCell>{stock.totalCostKRW.toLocaleString()}원</TableCell>
-              <TableCell>{stock.totalDividend.toLocaleString()}원</TableCell>
-              <TableCell>{stock.paymentMonth}</TableCell>
-              <TableCell>
-                <Button variant="ghost" size="icon" onClick={() => handleDelete(stock.id)}>
-                  <X className="h-4 w-4" />
-                </Button>
-              </TableCell>
+      {userStocks.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-20 bg-primary/10 rounded-lg">
+          <ListX className="text-accent h-16 w-16 mb-4" />
+          <p className="text-accent text-lg">현재 리스팅된 종목이 없습니다.</p>
+          <p className="text-primary-foreground mt-2">하단에 원하는 티커를 입력하여 종목을 추가해 보세요.</p>
+        </div>
+      ) : (
+        <Table>
+          <TableHeader className="bg-accent/50">
+            <TableRow>
+              <TableHead>상태</TableHead>
+              <TableHead>구매일자</TableHead>
+              <TableHead>카테고리</TableHead>
+              <TableHead>종목명</TableHead>
+              <TableHead>티커</TableHead>
+              <TableHead>주당 가격($)</TableHead>
+              <TableHead>주당 배당금($)</TableHead>
+              <TableHead>주당 가격(₩)</TableHead>
+              <TableHead>배당율</TableHead>
+              <TableHead>보유 수량</TableHead>
+              <TableHead>주식 구매비용(₩)</TableHead>
+              <TableHead>총 배당 금액</TableHead>
+              <TableHead>작년 배당금총액(지급횟수)</TableHead>
+              <TableHead>올해 배당금총액(지급횟수)</TableHead>
+              <TableHead>지급월</TableHead>
+              <TableHead>삭제</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {filteredStocks.map((userStock) => (
+              <TableRow key={userStock._id}>
+                <TableCell>
+                  <Select value={userStock.status} onValueChange={(value: any) => handleStatusChange(userStock._id || '', value)}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="보유예정">보유예정</SelectItem>
+                      <SelectItem value="보유중">보유중</SelectItem>
+                      <SelectItem value="매도">매도</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </TableCell>
+                <TableCell>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant="outline" className="w-[180px] justify-start text-left font-normal">
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {userStock.purchaseDate ? format(userStock.purchaseDate, 'yyyy.MM.dd') : ''}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0">
+                      <Calendar
+                        mode="single"
+                        selected={userStock.purchaseDate}
+                        onSelect={(date) => {
+                          if (date) {
+                            setUserStocks(userStocks.map(s =>
+                              s._id === userStock._id ? { ...s, purchaseDate: date } : s
+                            ));
+                          }
+                        }}
+                        locale={ko}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </TableCell>
+                <TableCell>{userStock.category}</TableCell>
+                <TableCell>{userStock.name}</TableCell>
+                <TableCell>{userStock.ticker}</TableCell>
+                <TableCell>{userStock.priceUSD}</TableCell>
+                <TableCell>{userStock.dividendUSD}</TableCell>
+                <TableCell>{Math.round(userStock.priceUSD * exchangeRate.buy).toLocaleString()}</TableCell>
+                <TableCell>{Number(userStock.dividendYield * 100).toFixed(2)}%</TableCell>
+                <TableCell>
+                  <Input
+                    type="number"
+                    min="1"
+                    value={userStock.quantity}
+                    onChange={(e) => {
+                      handleQuantityChange(userStock._id || '', parseInt(e.target.value) || 1);
+                    }}
+                    className="w-20"
+                  />
+                </TableCell>
+                <TableCell>{(Math.round(userStock.priceUSD * exchangeRate.buy) * userStock.quantity).toLocaleString()}원</TableCell>
+                <TableCell>{Math.round(userStock.dividendUSD * userStock.quantity * exchangeRate.sell).toLocaleString()}원</TableCell>
+                <TableCell>{userStock.lastYearTotalDividend}</TableCell>
+                <TableCell>{userStock.currentYearTotalDividend}</TableCell>
+                <TableCell>{userStock.paymentMonth}</TableCell>
+                <TableCell>
+                  <Button variant="ghost" size="icon" onClick={() => handleDelete(userStock._id || '')}>
+                    <X className="h-4 w-4" />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
 
       <div className="mt-4 flex items-center">
         <Input
@@ -270,6 +374,26 @@ const StockPortfolioList: React.FC<StockPortfolioListProps> = ({ exchangeRate }:
           <Plus className="h-4 w-4 mr-2" />
           추가
         </Button>
+        {isDirty && (
+          <div className="relative">
+            <div className="absolute bottom-[-80px] right-0 flex gap-2">
+              <Button 
+                className="bg-primary text-primary-foreground hover:text-primary-foreground/90 hover:bg-primary/90"
+                variant="outline" 
+                onClick={() => fetchPortfolio()}
+              >
+                취소
+              </Button>
+              <Button 
+                className="bg-accent text-accent-foreground hover:bg-accent/90"
+                onClick={handleSave}
+                disabled={isLoading}
+              >
+                {isLoading ? '저장 중...' : '변경사항 저장'}
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
 
       <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
@@ -284,6 +408,7 @@ const StockPortfolioList: React.FC<StockPortfolioListProps> = ({ exchangeRate }:
           </div>
         </DialogContent>
       </Dialog>
+
     </div>
   );
 }

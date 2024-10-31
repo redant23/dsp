@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Analytics } from '@vercel/analytics/react';
+import { Providers } from "@src/components/Providers";
+import { headers } from 'next/headers';
 
 import '@src/styles/globals.scss';
 import ClientWrapper from '@src/components/ClientWrapper';
@@ -14,9 +16,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="ko">
       <head>
@@ -26,9 +28,11 @@ export default function RootLayout({
 
       </head>
       <body>
-        <ClientWrapper>
-          {children}
-        </ClientWrapper>
+        <Providers>
+          <ClientWrapper>
+            {children}
+          </ClientWrapper>
+        </Providers>
         <Analytics />
       </body>
     </html>

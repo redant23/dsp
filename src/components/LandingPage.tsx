@@ -5,7 +5,11 @@ import StockPortfolioList from '@src/components/StockPortfolioList';
 
 import { User, ExchangeRate } from '@src/types';
 
-const LandingPage = ({ user }: { user: User | null }) => {
+type LandingPageProps = {
+  user: User;
+};
+
+const LandingPage = ({ user }: LandingPageProps) => {
   const [exchangeRate, setExchangeRate] = useState<ExchangeRate>({ buy: 0, sell: 0 });
   const [isClient, setIsClient] = useState(false);
 

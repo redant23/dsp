@@ -1,68 +1,40 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { FiMenu, FiX } from 'react-icons/fi';
-
 import ThemeToggle from "@src/components/ThemeToggle";
+import { useSession, signOut } from 'next-auth/react';
 import styles from '@src/styles/components/Header.module.scss';
+import { useToast } from '@src/hooks/use-toast';
 
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
+  const { status } = useSession();
+  const { toast } = useToast();
 
-  const handleRouteChange = () => {
-    setMenuOpen(false);
-  };
 
-  const checkLoginStatus = async () => {
-    if (typeof window === 'undefined') return;
-    
-    const token = localStorage.getItem('token');
-    if (!token) {
-      setIsLoggedIn(false);
-      return;
-    }
-
+  const handleSignOut = async () => {
     try {
-      const response = await fetch('/api/auth/status', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
+      await signOut({ redirect: false });
+      toast({
+        title: "로그아웃 성공",
+        description: "로그인 화면으로 이동합니다.",
       });
-
-      if (response.ok) {
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-        localStorage.removeItem('token');
-      }
     } catch (error) {
-      console.error('토큰 확인 실패:', error);
-      setIsLoggedIn(false);
+      toast({
+        variant: "destructive",
+        title: "오류",
+        description: "로그아웃 중 오류가 발생했습니다.",
+      });
     }
   };
-
-  useEffect(() => {
-    handleRouteChange();
-    checkLoginStatus();
-  }, [pathname]);
 
   const handleMenuClick = () => {
     setMenuOpen(!menuOpen);
-  };
-
-  const handleLogout = () => {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('token');
-    }
-    setIsLoggedIn(false);
-    router.push('/login');
   };
 
   return (
@@ -90,13 +62,13 @@ const Header: React.FC = () => {
             <li className={pathname === '/guide' ? styles.active : ''}>
               <Link href="/guide">사용방법</Link>
             </li>
-            {isLoggedIn ? (
+            {status === 'authenticated' ? (
               <>
                 <li className={pathname === '/mypage' ? styles.active : ''}>
                   <Link href="/mypage">내 정보</Link>
                 </li>
                 <li>
-                  <button onClick={handleLogout}>로그아웃</button>
+                  <button onClick={handleSignOut}>로그아웃</button>
                 </li>
               </>
             ) : (
