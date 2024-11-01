@@ -1,6 +1,5 @@
 'use client';
 
-import mongoose from 'mongoose';
 import React,{ useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@src/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@src/components/ui/select";
@@ -15,31 +14,12 @@ import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { useSession } from 'next-auth/react';
 import MonthBadges from "@src/components/MonthBadges";
+import { useMediaQuery } from '@src/hooks/useMediaQuery';
+import { PortfolioStock } from '@src/types';
+import MobileTooltip from '@src/components/MobileToolTip';
 
 const formatDate = (date: Date) => {
   return date.toISOString().split('T')[0].replace(/-/g, '.');
-};
-
-type PortfolioStock = {
-  _id?: string; // userStock id
-  user: mongoose.Types.ObjectId | object | string; // user Object id 혹은 user Object
-  stock: mongoose.Types.ObjectId | object | string; // stock Object id 혹은 stock Object
-  status: string;
-  purchaseDate?: Date;
-  sellDate?: Date;
-  category: string;
-  name: string;
-  ticker: string;
-  priceUSD: number;
-  dividendUSD: number;
-  priceKRW: number;
-  dividendYield: number;
-  quantity: number;
-  totalCostKRW: number;
-  totalDividend: number;
-  lastYearTotalDividend: string;
-  currentYearTotalDividend: string;
-  paymentMonth: string;
 };
 
 const StockPortfolioList: React.FC<StockPortfolioListProps> = ({ exchangeRate }: { exchangeRate: ExchangeRate }) => {
@@ -52,6 +32,9 @@ const StockPortfolioList: React.FC<StockPortfolioListProps> = ({ exchangeRate }:
   const [isLoading, setIsLoading] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
   const { data: session } = useSession();
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const [openTooltip, setOpenTooltip] = useState(false);
+  const [targetUserStock, setTargetUserStock] = useState<PortfolioStock | null>(null);
   
   useEffect(() => {
     fetchPortfolio();
@@ -264,10 +247,11 @@ const StockPortfolioList: React.FC<StockPortfolioListProps> = ({ exchangeRate }:
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    console.log('userStocks업데이트', userStocks);
-  }, [userStocks]);
+  
+  const handleTooltip = (userStock: PortfolioStock) => {
+    setOpenTooltip(true);
+    setTargetUserStock(userStock);
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -282,10 +266,10 @@ const StockPortfolioList: React.FC<StockPortfolioListProps> = ({ exchangeRate }:
 
       <div className="mb-4 flex justify-end">
         <Select value={filter} onValueChange={(value: any) => setFilter(value)}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-[180px] border-border/50 dark:border-border/50 border-2">
             <SelectValue placeholder="상태 필터" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="border-accent">
             <SelectItem value="전체">전체보기</SelectItem>
             <SelectItem value="보유예정">보유예정</SelectItem>
             <SelectItem value="보유중">보유중</SelectItem>
@@ -302,101 +286,200 @@ const StockPortfolioList: React.FC<StockPortfolioListProps> = ({ exchangeRate }:
         </div>
       ) : (
         <Table>
-          <TableHeader className="bg-accent/50">
+          <TableHeader className="bg-accent/80">
             <TableRow>
-              <TableHead>상태</TableHead>
-              <TableHead>구매일자</TableHead>
-              <TableHead>카테고리</TableHead>
-              <TableHead>종목명</TableHead>
-              <TableHead>티커</TableHead>
-              <TableHead>주당 가격($)</TableHead>
-              <TableHead>주당 배당금($)</TableHead>
-              <TableHead>주당 가격(₩)</TableHead>
-              <TableHead>배당율</TableHead>
-              <TableHead>보유 수량</TableHead>
-              <TableHead>주식 구매비용(₩)</TableHead>
-              <TableHead>총 배당 금액</TableHead>
-              <TableHead>작년 배당금총액(지급횟수)</TableHead>
-              <TableHead>올해 배당금총액(지급횟수)</TableHead>
-              <TableHead>지급월</TableHead>
-              <TableHead>삭제</TableHead>
+              <TableHead className="py-2 px-2 text-center text-muted-foreground whitespace-nowrap">상태</TableHead>
+              {!isMobile && (
+                <>
+                  <TableHead className="py-2 px-2 text-center text-muted-foreground whitespace-nowrap">구매일자</TableHead>
+                  <TableHead className="py-2 px-2 text-center text-muted-foreground whitespace-nowrap">카테고리</TableHead>
+                  <TableHead className="py-2 px-2 text-center text-muted-foreground whitespace-nowrap">종목명</TableHead>
+                </>
+              )}
+              <TableHead className="py-2 px-2 text-center text-muted-foreground whitespace-nowrap">티커</TableHead>
+              {!isMobile && (
+                <>
+                  <TableHead className="py-2 px-2 text-center text-muted-foreground whitespace-nowrap">주당 가격($)</TableHead>
+                  <TableHead className="py-2 px-2 text-center text-muted-foreground whitespace-nowrap">주당 배당금($)</TableHead>
+                </>
+              )}
+              <TableHead className="py-2 px-2 text-center text-muted-foreground whitespace-nowrap">주당 가격(₩)</TableHead>
+              <TableHead className="py-2 px-2 text-center text-muted-foreground whitespace-nowrap">배당율</TableHead>
+              <TableHead className="py-2 px-2 text-center text-muted-foreground whitespace-nowrap">보유 수량</TableHead>
+              <TableHead className="py-2 px-2 text-center text-muted-foreground whitespace-nowrap">주식 구매비용(₩)</TableHead>
+              <TableHead className="py-2 px-2 text-center text-muted-foreground whitespace-nowrap">총 배당 금액</TableHead>
+              {!isMobile && (
+                <>
+                  <TableHead className="py-2 px-2 text-center text-muted-foreground whitespace-nowrap">작년 배당금총액(지급횟수)</TableHead>
+                  <TableHead className="py-2 px-2 text-center text-muted-foreground whitespace-nowrap">올해 배당금총액(지급횟수)</TableHead>
+                </>
+              )}
+              <TableHead className="py-2 px-2 text-center text-muted-foreground whitespace-nowrap">지급월</TableHead>
+              <TableHead className="py-2 px-2 text-center text-muted-foreground whitespace-nowrap">삭제</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredStocks.map((userStock) => (
-              <TableRow key={userStock._id}>
-                <TableCell>
-                  <Select value={userStock.status} onValueChange={(value: any) => handleStatusChange(userStock._id || '', value)}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="보유예정">보유예정</SelectItem>
-                      <SelectItem value="보유중">보유중</SelectItem>
-                      <SelectItem value="매도">매도</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </TableCell>
-                <TableCell>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button variant="outline" className="w-[180px] justify-start text-left font-normal">
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {userStock.purchaseDate ? format(userStock.purchaseDate, 'yyyy.MM.dd') : ''}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
-                      <Calendar
-                        mode="single"
-                        selected={userStock.purchaseDate}
-                        onSelect={(date) => {
-                          if (date) {
-                            setUserStocks(userStocks.map(s =>
-                              s._id === userStock._id ? { ...s, purchaseDate: date } : s
-                            ));
-                          }
-                        }}
-                        locale={ko}
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </TableCell>
-                <TableCell>{userStock.category}</TableCell>
-                <TableCell>{userStock.name}</TableCell>
-                <TableCell>{userStock.ticker}</TableCell>
-                <TableCell>{userStock.priceUSD}</TableCell>
-                <TableCell>{userStock.dividendUSD}</TableCell>
-                <TableCell>{Math.round(userStock.priceUSD * exchangeRate.buy).toLocaleString()}</TableCell>
-                <TableCell>{Number(userStock.dividendYield * 100).toFixed(2)}%</TableCell>
-                <TableCell>
-                  <Input
-                    type="number"
-                    min="1"
-                    value={userStock.quantity}
-                    onChange={(e) => {
-                      handleQuantityChange(userStock._id || '', parseInt(e.target.value) || 1);
-                    }}
-                    className="w-20"
-                  />
-                </TableCell>
-                <TableCell>{(Math.round(userStock.priceUSD * exchangeRate.buy) * userStock.quantity).toLocaleString()}원</TableCell>
-                <TableCell>{Math.round(userStock.dividendUSD * userStock.quantity * exchangeRate.sell).toLocaleString()}원</TableCell>
-                <TableCell>{userStock.lastYearTotalDividend}</TableCell>
-                <TableCell>{userStock.currentYearTotalDividend}</TableCell>
-                <TableCell>
-                  <MonthBadges months={userStock.paymentMonth} />
-                </TableCell>
-                <TableCell>
-                  <Button variant="ghost" size="icon" onClick={() => handleDelete(userStock._id || '')}>
-                    <X className="h-4 w-4" />
-                  </Button>
-                </TableCell>
-              </TableRow>
+            {filteredStocks.map((userStock, index) => (
+              isMobile ? (
+                <TableRow key= {userStock._id} onClick={() => handleTooltip(userStock)} className={`${index % 2 === 0 ? 'bg-primary/30' : ''} border-border/10`}>
+                  <TableCell className="px-1 text-center">
+                    <Select value={userStock.status} onValueChange={(value: any) => handleStatusChange(userStock._id || '', value)}>
+                      <SelectTrigger className={`text-${userStock.status === '보유예정' ? 'warning' : userStock.status === '보유중' ? 'success' : 'destructive'}`}>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem className="text-warning" value="보유예정">보유예정</SelectItem>
+                        <SelectItem className="text-success" value="보유중">보유중</SelectItem>
+                        <SelectItem className="text-destructive" value="매도">매도</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </TableCell>
+                  {!isMobile && (
+                    <TableCell className="text-center">
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button variant="outline" className="w-[96px] px-2 gap-0.5 justify-start text-left font-normal">
+                            <CalendarIcon className="mr-1 h-4 w-4" />
+                            {userStock.purchaseDate ? format(userStock.purchaseDate, 'yy.MM.dd') : ''}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent align="start" className="w-auto p-0">
+                          <Calendar
+                            mode="single"
+                            captionLayout="dropdown-buttons"
+                            selected={userStock.purchaseDate}
+                            onSelect={(date) => {
+                              if (date) {
+                                setUserStocks(userStocks.map(s =>
+                                  s._id === userStock._id ? { ...s, purchaseDate: date } : s
+                                ));
+                              }
+                            }}
+                            fromYear={2000}
+                            toYear={2030}
+                            locale={ko}
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </TableCell>
+                  )}
+                  <TableCell className="text-center p-2">{userStock.ticker}</TableCell>
+                  <TableCell className="text-center p-2">{Math.round(userStock.priceUSD * exchangeRate.buy).toLocaleString()}</TableCell>
+                  <TableCell className="text-center p-2">{Number(userStock.dividendYield * 100).toFixed(2)}%</TableCell>
+                  <TableCell className="text-center p-2">
+                    <Input
+                      className="w-12 px-1 text-center" 
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      value={userStock.quantity}
+                      onChange={(e) => {
+                        const numValue = e.target.value.replace(/[^0-9]/g, '');
+                        e.target.value = Number(numValue) > 9999 ? '9999' : numValue;
+                        handleQuantityChange(userStock._id || '', parseInt(e.target.value) || 1);
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell className="text-center p-2">{(Math.round(userStock.priceUSD * exchangeRate.buy) * userStock.quantity).toLocaleString()}원</TableCell>
+                  <TableCell className="text-center p-2">{Math.round(userStock.dividendUSD * userStock.quantity * exchangeRate.sell).toLocaleString()}원</TableCell>
+                  <TableCell className={`p-2 ${!isMobile ? 'min-w-[13rem]' : ''}`}>
+                    <MonthBadges months={userStock.paymentMonth} />
+                  </TableCell>
+                  <TableCell>
+                    <Button variant="ghost" className="hover:bg-destructive/80 hover:text-destructive-foreground" size="icon" onClick={() => handleDelete(userStock._id || '')}>
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ) : (
+                <TableRow className={`${index % 2 === 0 ? 'bg-primary/30' : ''} border-border/10`} key={userStock._id}>
+                  <TableCell className="px-1 text-center">
+                    <Select value={userStock.status} onValueChange={(value: any) => handleStatusChange(userStock._id || '', value)}>
+                      <SelectTrigger className={`text-${userStock.status === '보유예정' ? 'warning' : userStock.status === '보유중' ? 'success' : 'destructive'}`}>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem className="text-warning" value="보유예정">보유예정</SelectItem>
+                        <SelectItem className="text-success" value="보유중">보유중</SelectItem>
+                        <SelectItem className="text-destructive" value="매도">매도</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button variant="outline" className="w-[96px] px-2 gap-0.5 justify-start text-left font-normal">
+                          <CalendarIcon className="mr-1 h-4 w-4" />
+                          {userStock.purchaseDate ? format(userStock.purchaseDate, 'yy.MM.dd') : ''}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0">
+                        <Calendar
+                          captionLayout="dropdown"
+                          mode="single"
+                          selected={userStock.purchaseDate}
+                          onSelect={(date) => {
+                            if (date) {
+                              setUserStocks(userStocks.map(s =>
+                                s._id === userStock._id ? { ...s, purchaseDate: date } : s
+                              ));
+                            }
+                          }}
+                          locale={ko}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </TableCell>
+                  {!isMobile && (
+                    <>
+                      <TableCell className="text-center p-2">{userStock.category}</TableCell>
+                      <TableCell className="text-center p-2">{userStock.name}</TableCell>
+                    </>
+                  )}
+                  <TableCell className="text-center p-2">{userStock.ticker}</TableCell>
+                  {!isMobile && (
+                    <>
+                      <TableCell className="text-center p-2">{userStock.priceUSD}</TableCell>
+                      <TableCell className="text-center p-2">{userStock.dividendUSD}</TableCell>
+                    </>
+                  )}
+                  <TableCell className="text-center p-2">{Math.round(userStock.priceUSD * exchangeRate.buy).toLocaleString()}</TableCell>
+                  <TableCell className="text-center p-2">{Number(userStock.dividendYield * 100).toFixed(2)}%</TableCell>
+                  <TableCell className="text-center p-2">
+                    <Input
+                      className="w-12 px-1 text-center" 
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      value={userStock.quantity}
+                      onChange={(e) => {
+                        const numValue = e.target.value.replace(/[^0-9]/g, '');
+                        e.target.value = Number(numValue) > 9999 ? '9999' : numValue;
+                        handleQuantityChange(userStock._id || '', parseInt(e.target.value) || 1);
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell className="text-center p-2">{(Math.round(userStock.priceUSD * exchangeRate.buy) * userStock.quantity).toLocaleString()}원</TableCell>
+                  <TableCell className="text-center p-2">{Math.round(userStock.dividendUSD * userStock.quantity * exchangeRate.sell).toLocaleString()}원</TableCell>
+                  <TableCell className="text-center p-2">{userStock.lastYearTotalDividend}</TableCell>
+                  <TableCell className="text-center p-2">{userStock.currentYearTotalDividend}</TableCell>
+                  <TableCell className="p-2 min-w-[13rem]">
+                    <MonthBadges months={userStock.paymentMonth} />
+                  </TableCell>
+                  <TableCell>
+                    <Button variant="ghost" className="hover:bg-destructive/80 hover:text-destructive-foreground" size="icon" onClick={() => handleDelete(userStock._id || '')}>
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              )
             ))}
           </TableBody>
         </Table>
       )}
-
+      {isMobile && openTooltip && (
+        <MobileTooltip onClick={() => setOpenTooltip(false)} stock={targetUserStock} />
+      )}
       <div className="mt-4 flex items-center">
         <Input
           type="text"
@@ -415,7 +498,10 @@ const StockPortfolioList: React.FC<StockPortfolioListProps> = ({ exchangeRate }:
               <Button 
                 className="bg-primary text-primary-foreground hover:text-primary-foreground/90 hover:bg-primary/90"
                 variant="outline" 
-                onClick={() => fetchPortfolio()}
+                onClick={() => {
+                  fetchPortfolio();
+                  setIsDirty(false);
+                }}
               >
                 취소
               </Button>
