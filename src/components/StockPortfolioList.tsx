@@ -14,6 +14,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@src/components/ui/popo
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { useSession } from 'next-auth/react';
+import MonthBadges from "@src/components/MonthBadges";
 
 const formatDate = (date: Date) => {
   return date.toISOString().split('T')[0].replace(/-/g, '.');
@@ -382,7 +383,9 @@ const StockPortfolioList: React.FC<StockPortfolioListProps> = ({ exchangeRate }:
                 <TableCell>{Math.round(userStock.dividendUSD * userStock.quantity * exchangeRate.sell).toLocaleString()}원</TableCell>
                 <TableCell>{userStock.lastYearTotalDividend}</TableCell>
                 <TableCell>{userStock.currentYearTotalDividend}</TableCell>
-                <TableCell>{userStock.paymentMonth}</TableCell>
+                <TableCell>
+                  <MonthBadges months={userStock.paymentMonth} />
+                </TableCell>
                 <TableCell>
                   <Button variant="ghost" size="icon" onClick={() => handleDelete(userStock._id || '')}>
                     <X className="h-4 w-4" />
