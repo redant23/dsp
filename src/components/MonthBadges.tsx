@@ -20,7 +20,7 @@ const MonthBadges: React.FC<MonthBadgesProps> = ({ months }) => {
   return (
     <div className="flex gap-1 flex-wrap">
       {months.split(',').map((month) => {
-        const cleanMonth = month.trim().replace('월', '');
+        const cleanMonth = month === '매월' ? '매월' : month.trim().replace('월', '');
         return (
           <Badge
             className="rounded-sm text-sm px-[0.3rem]"
