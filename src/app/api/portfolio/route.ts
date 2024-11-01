@@ -117,3 +117,36 @@ export async function POST(request: Request) {
   }
 }
 
+export async function DELETE(request: Request) {
+  try {
+    const session = await getServerSession(authOptions);
+    
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: '로그인이 필요합니다.' }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const userStockId = searchParams.get('id');
+
+    if (!userStockId) {
+      return NextResponse.json({ error: '삭제할 포트폴리오 ID가 필요합니다.' }, { status: 400 });
+    }
+
+    await connectToDatabase();
+
+    const deletedUserStock = await UserStock.findOneAndDelete({
+      _id: userStockId,
+      user: session.user.id
+    });
+
+    if (!deletedUserStock) {
+      return NextResponse.json({ error: '해당 포트폴리오를 찾을 수 없습니다.' }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: '포트폴리오가 성공적으로 삭제되었습니다.' });
+
+  } catch (error) {
+    console.error('포트폴리오 삭제 중 오류 발생:', error);
+    return NextResponse.json({ error: '포트폴리오 삭제에 실패했습니다.' }, { status: 500 });
+  }
+}

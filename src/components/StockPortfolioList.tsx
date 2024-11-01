@@ -67,7 +67,34 @@ const StockPortfolioList: React.FC<StockPortfolioListProps> = ({ exchangeRate }:
     }
   };
 
-  const filteredStocks = filter === '전체' ? userStocks : userStocks.filter(userStock => userStock.status === filter);
+  const statusOrder = {
+    '보유중': 0,
+    '보유예정': 1,
+    '매도': 2
+  };
+
+  const filteredStocks = (filter === '전체' ? userStocks : userStocks.filter(userStock => userStock.status === filter))
+  .sort((a, b) => {
+    // 먼저 상태로 정렬
+    const statusCompare = statusOrder[a.status as keyof typeof statusOrder] - statusOrder[b.status as keyof typeof statusOrder];
+    if (statusCompare !== 0) return statusCompare;
+    
+    // 상태가 같은 경우 구매일자로 정렬
+    // 구매일자가 없는 경우는 가장 마지막으로
+    if (!a.purchaseDate && !b.purchaseDate) {
+      // 둘 다 구매일자가 없는 경우 종목명으로 정렬
+      return a.name.localeCompare(b.name);
+    }
+    if (!a.purchaseDate) return 1;
+    if (!b.purchaseDate) return -1;
+    
+    // 구매일자 비교
+    const dateCompare = new Date(b.purchaseDate).getTime() - new Date(a.purchaseDate).getTime();
+    if (dateCompare !== 0) return dateCompare;
+    
+    // 구매일자가 같은 경우 종목명으로 정렬 (A-Z)
+    return a.name.localeCompare(b.name);
+  });
 
   const handleStatusChange = (_id: string, newStatus: string) => {
     setUserStocks(userStocks.map(userStock =>
@@ -100,6 +127,11 @@ const StockPortfolioList: React.FC<StockPortfolioListProps> = ({ exchangeRate }:
 
   const confirmDelete = () => {
     if (stockToDelete !== null) {
+      fetch(`/api/portfolio?id=${stockToDelete}`, {
+        method: 'DELETE'
+      }).catch(error => {
+        console.error('포트폴리오 삭제 중 오류:', error);
+      });
       setUserStocks(userStocks.filter(userStock => userStock._id !== stockToDelete));
       setIsDeleteModalOpen(false);
       setStockToDelete(null);
