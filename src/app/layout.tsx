@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Analytics } from '@vercel/analytics/react';
 import { Providers } from "@src/components/Providers";
-import { headers } from 'next/headers';
 
 import '@src/styles/globals.scss';
 import ClientWrapper from '@src/components/ClientWrapper';
@@ -11,8 +10,6 @@ export const metadata: Metadata = {
   description: `월배당 포트폴리오를 관리할 수 있는 웹서비스`,
   manifest: '/manifest.webmanifest',
 };
-
-
 
 export default function RootLayout({
   children,
