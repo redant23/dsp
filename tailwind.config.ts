@@ -4,10 +4,10 @@ import type { Config } from "tailwindcss";
 const config: Config = {
     darkMode: ["class"],
 		content: [
-			"./src/pages/**/*.{js,ts,jsx,tsx,mdx,scss}",
-			"./src/components/**/*.{js,ts,jsx,tsx,mdx,scss}",
-			"./src/app/**/*.{js,ts,jsx,tsx,mdx,css,scss}",
-			"./components/**/*.{js,ts,jsx,tsx,scss}"  // 최상위 경로에 있는 components/ui 포함
+			"./src/pages/**/*.{js,ts,jsx,tsx,mdx,css}",
+			"./src/components/**/*.{js,ts,jsx,tsx,mdx,css}",
+			"./src/app/**/*.{js,ts,jsx,tsx,mdx,css}",
+			"./components/**/*.{js,ts,jsx,tsx,css}"  // 최상위 경로에 있는 components/ui 포함
 		],
 		theme: {
         	extend: {
@@ -77,11 +77,10 @@ const config: Config = {
 		module: {
 			rules: [
 				{
-					test: /\.scss$/,
+					test: /\.css$/,
 					use: [
 						'style-loader',
 						'css-loader',
-						'sass-loader',
 					],
 				},
 			],

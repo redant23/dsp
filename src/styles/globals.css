@@ -1,0 +1,136 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+@import url('https://fonts.googleapis.com/earlyaccess/notosanskr.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 글로벌 CSS 변수 정의 */
+:root {
+  /* 기본 색상 */
+  --dsp-black: 0 0% 13%;
+  --dsp-yellow: 42 92% 47%;
+  --dsp-blue: 210 75% 40%;
+  --dsp-light-blue: 207 62% 64%;
+  --dsp-dark-blue: 210 75% 30%;
+  --dsp-white: 0 3% 98%;
+  --dsp-white-pure: 0 0% 100%;
+  --dsp-light-gray: 0 0% 91%;
+  --dsp-medium-gray: 0 0% 80%;
+  --dsp-gray: 0 0% 60%;
+  --dsp-dark-gray: 0 0% 15%;
+  --dsp-extra-light-gray: 0 0% 96%;
+  --dsp-extra-dark-gray: 0 0% 18%;
+
+  /* 기능적 색상 */
+  --dsp-red: 356 61% 42%;
+  --dsp-green: 120 95% 41%;
+
+  /* 폰트 */
+  --font-family-base: 'Pretendard', 'Noto Sans KR', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-size-base: 16px;
+  --font-size-small: 14px;
+  --font-size-large: 20px;
+  --line-height-base: 1.5;
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
+  --leading-10: 3.5rem;
+
+  /* 간격 */
+  --spacing-unit: 8px;
+  --spacing-small: calc(var(--spacing-unit) * 0.5);
+  --spacing-medium: var(--spacing-unit);
+  --spacing-large: calc(var(--spacing-unit) * 2);
+  --spacing-xlarge: calc(var(--spacing-unit) * 4);
+
+  /* 그림자 */
+  --box-shadow-base: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  --box-shadow-medium: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  --box-shadow-large: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+
+  /* 테마 변수 */
+  --background: var(--dsp-white);
+  --foreground: var(--dsp-black);
+  --card: var(--dsp-white);
+  --card-foreground: var(--dsp-black);
+  --popover: var(--dsp-white);
+  --popover-foreground: var(--dsp-yellow);
+  --primary: var(--dsp-white-pure);
+  --primary-foreground: var(--dsp-black);
+  --secondary: var(--dsp-white);
+  --secondary-foreground: var(--dsp-black);
+  --muted: var(--dsp-gray);
+  --muted-foreground: var(--dsp-dark-gray);
+  --accent: var(--dsp-yellow);
+  --accent-foreground: var(--dsp-black);
+  --destructive: var(--dsp-red);
+  --destructive-foreground: var(--dsp-white);
+  --border: var(--dsp-gray);
+  --input: var(--dsp-light-gray);
+  --ring: var(--dsp-yellow);
+  --radius: 0.5rem;
+  --success: var(--dsp-green);
+  --success-foreground: var(--dsp-white);
+  --warning: var(--dsp-yellow);
+  --warning-foreground: var(--dsp-black);
+  --chart-1: var(--dsp-red);
+  --chart-2: var(--dsp-blue);
+  --chart-3: var(--dsp-green);
+  --chart-4: var(--dsp-light-blue);
+  --chart-5: var(--dsp-yellow);
+}
+
+.dark {
+  --background: var(--dsp-black);
+  --foreground: var(--dsp-white);
+  --card: var(--dsp-dark-gray);
+  --card-foreground: var(--dsp-white);
+  --popover: var(--dsp-black);
+  --popover-foreground: var(--dsp-yellow);
+  --primary: var(--dsp-dark-gray);
+  --primary-foreground: var(--dsp-white);
+  --secondary: var(--dsp-black);
+  --secondary-foreground: var(--dsp-white);
+  --input: var(--dsp-dark-gray);
+}
+
+/* 기본 body 스타일 */
+body {
+  @apply font-sans;
+  font-family: var(--font-family-base);
+  margin: 0;
+  padding-bottom: 60px;
+  word-break: keep-all;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 1.1rem;
+  }
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+body input:-webkit-autofill,
+body input:-webkit-autofill:focus {
+  transition: background-color 0s 600000s, color 0s 600000s !important;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-primary text-primary-foreground;
+  }
+}

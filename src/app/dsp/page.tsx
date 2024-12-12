@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Main from '@src/components/Main';
+import LandingPage from "@src/components/LandingPage";
 import { User } from '@src/types';
 
 export default function Home() {
@@ -13,7 +13,13 @@ export default function Home() {
 
   useEffect(() => {
     const checkLoginStatus = async () => {
- 
+      if (status !== 'loading' && status !== 'authenticated') {
+        router.push('/login');
+        return;
+      }
+
+      console.log('session data', data);
+      
       if (data?.user) {
         const user: User = {
           id: data.user.id || '',
@@ -33,8 +39,8 @@ export default function Home() {
   }
 
   return (
-    <div className="max-xl:px-4 mx-auto max-w-screen-xl">
-      <Main />
+    <div className="max-xl:px-4 mx-auto max-w-screen-xl bg-primary">
+      <LandingPage user={user} />
     </div>
   );
 }
